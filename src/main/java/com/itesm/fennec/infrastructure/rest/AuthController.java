@@ -1,4 +1,3 @@
-
 package com.itesm.fennec.infrastructure.rest;
 
 import com.itesm.fennec.application.useCase.auth.SignUpUseCase;

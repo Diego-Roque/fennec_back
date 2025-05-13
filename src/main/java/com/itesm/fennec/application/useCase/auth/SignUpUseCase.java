@@ -11,6 +11,12 @@ public class SignUpUseCase {
     SignUpService signUpService;
 
     public void execute(SignUpDTO signUpDTO) throws Exception {
-        signUpService.signUp(signUpDTO.getEmail(), signUpDTO.getPassword());
+        signUpService.signUp(
+                signUpDTO.getEmail(),
+                signUpDTO.getPassword(),
+                signUpDTO.getNombre(),
+                signUpDTO.getTelefono(),
+                signUpDTO.getTipoRole()
+        );
     }
 }

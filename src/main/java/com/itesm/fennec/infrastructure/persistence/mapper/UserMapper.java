@@ -8,6 +8,9 @@ public class UserMapper {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
         userEntity.setFirebaseId(user.getFirebaseId());
+        userEntity.setNombre(user.getNombre());
+        userEntity.setTelefono(user.getTelefono());
+        userEntity.setTipoRole(user.getTipoRole());
         return userEntity;
     }
 
@@ -15,6 +18,9 @@ public class UserMapper {
         User user = new User();
         user.setId(userEntity.getId());
         user.setFirebaseId(userEntity.getFirebaseId());
+        user.setNombre(userEntity.getNombre());
+        user.setTelefono(userEntity.getTelefono());
+        user.setTipoRole(userEntity.getTipoRole());
         return user;
     }
 }

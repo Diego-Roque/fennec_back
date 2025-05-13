@@ -19,16 +19,12 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         return null;
     }
 
-    public UserEntity findUserById(int id) {
-        return findById(id);
-    }
-
     @Override
     @Transactional
     public User createUser(User user) {
-        persist(UserMapper.toEntity(user));
+        UserEntity userEntity = UserMapper.toEntity(user);
+        persist(userEntity);
         flush();
-        return user;
+        return UserMapper.toDomain(userEntity);
     }
-
 }

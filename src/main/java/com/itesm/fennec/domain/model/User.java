@@ -11,5 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class User {
     private Integer id;
+    private String nombre;
     private String firebaseId;
+    private String telefono;
+    private Integer tipoRole; // 1 = Admin, 2 = User, etc.
 }
