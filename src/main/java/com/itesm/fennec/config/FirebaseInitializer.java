@@ -19,7 +19,7 @@ public class FirebaseInitializer {
         if(FirebaseApp.getApps().isEmpty()) {
             try {
                 FileInputStream serviceAccount =
-                        new FileInputStream("src/main/resources/ecommerce-dac8d-firebase-adminsdk-fbsvc-3845230258.json");
+                        new FileInputStream("src/main/resources/test-ecommerce-a80ea-firebase-adminsdk-fbsvc-fce39dd921.json");
                 FirebaseOptions options= FirebaseOptions.builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
                 FirebaseApp.initializeApp(options);
                 System.out.println(serviceAccount);
