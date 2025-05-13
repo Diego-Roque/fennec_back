@@ -7,8 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SendEmailDTO {
-    private String to;
+    private String firebaseUID;
     private String subject;
     private String message;
-
 }

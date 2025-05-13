@@ -15,4 +15,5 @@ public class User {
     private String firebaseId;
     private String telefono;
     private String tipoRole;
+    private String email;
 }

@@ -22,6 +22,10 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
+        if (path.endsWith("/uid/email")) {
+            return;
+        }
+
         String authHeader = requestContext.getHeaderString("Authorization");
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
