@@ -1,5 +1,8 @@
 package com.itesm.fennec.infrastructure.persistence.repository;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.itesm.fennec.domain.model.User;
 import com.itesm.fennec.domain.repository.UserRepository;
 import com.itesm.fennec.infrastructure.persistence.entity.UserEntity;
@@ -12,11 +15,15 @@ import jakarta.transaction.Transactional;
 public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase<UserEntity, Integer> {
     @Override
     public User findByFirebaseId(String firebaseId) {
-        UserEntity userEntity = find("firebaseId", firebaseId).firstResult();
-        if (userEntity != null) {
-            return UserMapper.toDomain(userEntity);
+        try {
+            FirebaseToken token = FirebaseAuth.getInstance().verifyIdToken(firebaseId);
+            User user = new User();
+            user.setFirebaseId(firebaseId);
+            user.setEmail(token.getEmail());
+            return user;
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException("Error retrieving email: " + e.getMessage(), e);
         }
-        return null;
     }
 
     @Override
