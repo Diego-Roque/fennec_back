@@ -14,5 +14,5 @@ public class User {
     private String nombre;
     private String firebaseId;
     private String telefono;
-    private Integer tipoRole; // 1 = Admin, 2 = User, etc.
+    private String tipoRole;
 }

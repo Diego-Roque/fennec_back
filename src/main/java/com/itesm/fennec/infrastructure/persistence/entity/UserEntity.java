@@ -24,5 +24,5 @@ public class UserEntity extends PanacheEntityBase {
     private String telefono;
 
     @Column(name="tipo_role")
-    private Integer tipoRole;
+    private String tipoRole;
 }

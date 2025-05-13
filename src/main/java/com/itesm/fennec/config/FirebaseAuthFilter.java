@@ -17,7 +17,6 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext){
-        // Get the complete path and check if it's the signup endpoint
         String path = requestContext.getUriInfo().getPath();
         if (path.endsWith("/auth/signup")) {
             return;

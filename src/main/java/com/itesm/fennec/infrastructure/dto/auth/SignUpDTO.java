@@ -14,5 +14,5 @@ public class SignUpDTO {
     private String password;
     private String nombre;
     private String telefono;
-    private Integer tipoRole; // 1 = Admin, 2 = User, etc.
+    private String tipoRole;
 }

@@ -13,7 +13,7 @@ public class SignUpService {
     @Inject
     UserRepository userRepository;
 
-    public User signUp(String email, String password, String nombre, String telefono, Integer tipoRole) throws Exception {
+    public User signUp(String email, String password, String nombre, String telefono, String tipoRole) throws Exception {
         CreateRequest request = new CreateRequest()
                 .setEmail(email)
                 .setPassword(password)
