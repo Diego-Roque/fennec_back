@@ -14,7 +14,8 @@ public class SendEmailUseCase {
     EmailRepository emailRepository;
 
     public void execute(SendEmailDTO sendEmailDTO) throws Exception {
-        Email email = new Email(sendEmailDTO.getTo(), sendEmailDTO.getSubject(), sendEmailDTO.getMessage());
+        // Crear el objeto Email y enviar usando el repositorio
+        Email email = new Email(sendEmailDTO.getFirebaseUID(), sendEmailDTO.getSubject(), sendEmailDTO.getMessage());
         emailRepository.sendEmail(email);
     }
 }

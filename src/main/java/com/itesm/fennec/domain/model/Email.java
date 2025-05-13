@@ -6,7 +6,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Email {
-    // Getters and Setters
     private String to;
     private String subject;
     private String message;
