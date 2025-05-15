@@ -22,7 +22,7 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
-        if (path.endsWith("/uid/email")) {
+        if (path.endsWith("/api/propiedades/property")) {
             return;
         }
 
