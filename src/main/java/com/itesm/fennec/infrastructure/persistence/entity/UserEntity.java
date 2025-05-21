@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UserEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id_usuario;
 
     @Column(name="firebase_id", nullable = false, unique = true, length = 255)
     private String firebaseId;

@@ -29,6 +29,13 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
     @Override
     @Transactional
     public User createUser(User user) {
+        // Verificar si el usuario ya existe por firebaseId
+        UserEntity existingUser = find("firebaseId", user.getFirebaseId()).firstResult();
+        if (existingUser != null) {
+            return UserMapper.toDomain(existingUser);
+        }
+        
+        // Si no existe, crear nuevo usuario
         UserEntity userEntity = UserMapper.toEntity(user);
         persist(userEntity);
         flush();

@@ -22,9 +22,7 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
-        if (path.endsWith("/api/propiedades/property")) {
-            return;
-        }
+
 
         String authHeader = requestContext.getHeaderString("Authorization");
 

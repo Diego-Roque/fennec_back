@@ -6,7 +6,7 @@ import com.itesm.fennec.infrastructure.persistence.entity.UserEntity;
 public class UserMapper {
     public static UserEntity toEntity(User user) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(user.getId());
+        userEntity.setId_usuario(user.getId());
         userEntity.setFirebaseId(user.getFirebaseId());
         userEntity.setNombre(user.getNombre());
         userEntity.setTelefono(user.getTelefono());
@@ -16,7 +16,7 @@ public class UserMapper {
 
     public static User toDomain(UserEntity userEntity) {
         User user = new User();
-        user.setId(userEntity.getId());
+        user.setId(userEntity.getId_usuario());
         user.setFirebaseId(userEntity.getFirebaseId());
         user.setNombre(userEntity.getNombre());
         user.setTelefono(userEntity.getTelefono());
