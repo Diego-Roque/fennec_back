@@ -11,7 +11,6 @@ import java.util.List;
 
 @Path("/api/propiedades")
 public class TestController {
-
     @GET
     @Path("/property")
     @Produces(MediaType.APPLICATION_JSON)
