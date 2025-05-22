@@ -22,4 +22,14 @@ public class FirebaseUserService {
             throw new RuntimeException("Error retrieving email: " + e.getMessage(), e);
         }
     }
+
+    public String getUidFromToken(String idToken) {
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+            return decodedToken.getUid();
+        } catch (Exception e) {
+            throw new RuntimeException("Token inválido", e);
+        }
+    }
+
 }

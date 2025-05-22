@@ -41,4 +41,17 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         flush();
         return UserMapper.toDomain(userEntity);
     }
+
+    @Override
+    @Transactional
+    public User findByUid(String uid) {
+        UserEntity userEntity = find("firebaseId", uid).firstResult();
+        if (userEntity == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        return UserMapper.toDomain(userEntity);
+    }
+
+
+
 }

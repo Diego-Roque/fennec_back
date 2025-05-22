@@ -14,7 +14,7 @@ public class UserEntity extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_usuario;
 
-    @Column(name="firebase_id", nullable = false, unique = true, length = 255)
+    @Column(name="firebase_id")
     private String firebaseId;
 
     @Column(name="nombre", length = 100)
@@ -25,4 +25,7 @@ public class UserEntity extends PanacheEntityBase {
 
     @Column(name="tipo_role")
     private String tipoRole;
+
+    @Column(name="email")
+    private String email;
 }

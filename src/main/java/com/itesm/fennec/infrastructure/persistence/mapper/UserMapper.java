@@ -1,6 +1,7 @@
 package com.itesm.fennec.infrastructure.persistence.mapper;
 
 import com.itesm.fennec.domain.model.User;
+import com.itesm.fennec.infrastructure.dto.UserDTO;
 import com.itesm.fennec.infrastructure.persistence.entity.UserEntity;
 
 public class UserMapper {
@@ -11,6 +12,7 @@ public class UserMapper {
         userEntity.setNombre(user.getNombre());
         userEntity.setTelefono(user.getTelefono());
         userEntity.setTipoRole(user.getTipoRole());
+        userEntity.setEmail(user.getEmail());
         return userEntity;
     }
 
@@ -21,6 +23,16 @@ public class UserMapper {
         user.setNombre(userEntity.getNombre());
         user.setTelefono(userEntity.getTelefono());
         user.setTipoRole(userEntity.getTipoRole());
+        user.setEmail(userEntity.getEmail());
         return user;
+    }
+
+    public static UserDTO toDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUid(user.getFirebaseId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFullName(user.getNombre());
+        userDTO.setTelefono(user.getTelefono());
+        return userDTO;
     }
 }
