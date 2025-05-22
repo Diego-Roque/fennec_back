@@ -11,6 +11,7 @@ public class PropertyDTO {
     public int size;
     public int bathrooms;
     public int bedrooms;
+    public int parking;
     public List<Integer> previousPrices;
     public double valuation3Years;
     public double valuation5Years;
@@ -27,7 +28,7 @@ public class PropertyDTO {
 
 
     public PropertyDTO(String name, String location, String description, String type,
-                       double price, int size, int bathrooms, int bedrooms,
+                       double price, int size, int bathrooms, int bedrooms, int parking,
                        List<Integer> previousPrices, double valuation3Years, double valuation5Years,
                        double growthRate, double roiMonthly, int breakevenYears, int occupancyRate,
                        List<String> riskFactors, String levelRisk,
@@ -40,6 +41,7 @@ public class PropertyDTO {
         this.size = size;
         this.bathrooms = bathrooms;
         this.bedrooms = bedrooms;
+        this.parking = parking;
         this.previousPrices = previousPrices;
         this.valuation3Years = valuation3Years;
         this.valuation5Years = valuation5Years;
