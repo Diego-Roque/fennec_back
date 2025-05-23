@@ -10,8 +10,10 @@ import com.itesm.fennec.infrastructure.dto.auth.SignUpDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.HashMap;
@@ -39,6 +41,45 @@ public class AuthController {
                     .build();
         }
     }
+    @POST
+    @Path("/delete/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@Context HttpHeaders headers) {
+        String authHeader = headers.getHeaderString("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"Authorization header missing or invalid\"}")
+                    .build();
+        }
+
+        String token = authHeader.substring(7);
+        try {
+            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = firebaseToken.getUid();
+            String email = firebaseToken.getEmail();
+            String name = firebaseToken.getName();
+
+            User userToDelete = new User();
+            userToDelete.setFirebaseId(uid);
+            userToDelete.setEmail(email);
+            userToDelete.setNombre(name);
+
+            userRepository.deleteUser(String.valueOf(userToDelete));
+
+            return Response.ok("{\"message\":\"Usuario marcado como inactivo correctamente\"}").build();
+
+        } catch (FirebaseAuthException e) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"Token inválido\"}")
+                    .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Error al marcar el usuario como inactivo\"}")
+                    .build();
+        }
+    }
+
+
     @Inject
     UserRepository userRepository;
 

@@ -5,4 +5,5 @@ public interface UserRepository {
     User findByFirebaseId(String firebaseId);
     User createUser(User user);
     User findByUid(String uid);
+    User deleteUser(String uid);
 }
