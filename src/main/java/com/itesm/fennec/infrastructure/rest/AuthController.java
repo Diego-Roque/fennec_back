@@ -56,15 +56,7 @@ public class AuthController {
         try {
             FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = firebaseToken.getUid();
-            String email = firebaseToken.getEmail();
-            String name = firebaseToken.getName();
-
-            User userToDelete = new User();
-            userToDelete.setFirebaseId(uid);
-            userToDelete.setEmail(email);
-            userToDelete.setNombre(name);
-
-            userRepository.deleteUser(String.valueOf(userToDelete));
+            userRepository.deleteUser(uid);
 
             return Response.ok("{\"message\":\"Usuario marcado como inactivo correctamente\"}").build();
 
