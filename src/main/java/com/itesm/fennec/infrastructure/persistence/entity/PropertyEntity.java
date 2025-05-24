@@ -52,52 +52,5 @@ public class PropertyEntity {
     @JoinColumn(name = "id_colonia", insertable = false, updatable = false)
     private ColoniaEntity colonia;
 
-    public void setIdPropiedad(Long idPropiedad) {
-        this.idPropiedad = idPropiedad;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
-    }
-
-    public void setSuperficie(BigDecimal superficie) {
-        this.superficie = superficie;
-    }
-
-    public void setHabitaciones(Integer habitaciones) {
-        this.habitaciones = habitaciones;
-    }
-
-    public void setBanos(Integer banos) {
-        this.banos = banos;
-    }
-
-    public void setEstacionamiento(Integer estacionamiento) {
-        this.estacionamiento = estacionamiento;
-    }
-
-    public void setIdTipoPropiedad(Long idTipoPropiedad) {
-        this.idTipoPropiedad = idTipoPropiedad;
-    }
-
-    public void setIdColonia(Long idColonia) {
-        this.idColonia = idColonia;
-    }
-
-    public void setTipoPropiedad(PropertyTypeEntity tipoPropiedad) {
-        this.tipoPropiedad = tipoPropiedad;
-    }
-
-    public void setColonia(ColoniaEntity colonia) {
-        this.colonia = colonia;
-    }
 }
 

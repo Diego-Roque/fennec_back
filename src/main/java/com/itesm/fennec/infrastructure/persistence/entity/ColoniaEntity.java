@@ -25,37 +25,6 @@ public class ColoniaEntity {
     @JoinColumn(name = "id_municipio", insertable = false, updatable = false)
     private MunicipioEntity municipio;
 
-    // Getters y setters
-    public Long getIdColonia() {
-        return idColonia;
-    }
 
-    public void setIdColonia(Long idColonia) {
-        this.idColonia = idColonia;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Long getIdMunicipio() {
-        return idMunicipio;
-    }
-
-    public void setIdMunicipio(Long idMunicipio) {
-        this.idMunicipio = idMunicipio;
-    }
-
-    public MunicipioEntity getMunicipio() {
-        return municipio;
-    }
-
-    public void setMunicipio(MunicipioEntity municipio) {
-        this.municipio = municipio;
-    }
 }
 
