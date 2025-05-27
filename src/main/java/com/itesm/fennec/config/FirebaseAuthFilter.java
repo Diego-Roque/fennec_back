@@ -22,7 +22,7 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
         if (path.endsWith("/auth/signup")) {
             return;
         }
-        if (path.endsWith("/api/investment")) {
+        if (path.contains("/api/estimar")) {
             return;
         }
 
