@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PropertyEstimator {
     private String alcaldia;
-    private int dimensiones_m2;
+    private int metros_cuadrados;
     private int banos;
     private int recamaras;
     private int estacionamientos;
