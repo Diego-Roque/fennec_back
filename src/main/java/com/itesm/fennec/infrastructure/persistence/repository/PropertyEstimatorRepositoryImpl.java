@@ -9,6 +9,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 @ApplicationScoped
@@ -18,16 +20,28 @@ public class PropertyEstimatorRepositoryImpl implements PropertyEstimatorReposit
     private static final String PREDICT_URL_CASA = "http://localhost:8000/casa/predict";
 
     @Override
-    public PredictionResult estimarValorDepartamento(PropertyEstimator propertyEstimator) {
+    public PredictionResult estimarValorDepartamento(PropertyEstimator property) {
         try {
+            // Armar el JSON correcto para el modelo
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("alcaldia", property.getAlcaldia());
+            jsonMap.put("metro_cuadrados", property.getMetros_cuadrados());
+            jsonMap.put("recamaras", property.getRecamaras());
+            jsonMap.put("banos", property.getBanos());
+            jsonMap.put("estacionamientos", property.getEstacionamientos());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonInput = objectMapper.writeValueAsString(jsonMap);
+
+            // Debug: imprimir el JSON que se va a enviar
+            System.out.println("Enviando al modelo: " + jsonInput);
+
+            // Conexión HTTP
             URL url = new URL(PREDICT_URL_DEPARTAMENTO);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonInput = objectMapper.writeValueAsString(propertyEstimator);
 
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(jsonInput.getBytes());
