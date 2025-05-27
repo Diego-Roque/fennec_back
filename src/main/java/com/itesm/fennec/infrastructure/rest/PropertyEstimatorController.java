@@ -1,35 +1,33 @@
 package com.itesm.fennec.infrastructure.rest;
 
-
-import com.itesm.fennec.application.useCase.EstimarValorUseCase;
+import com.itesm.fennec.application.service.PropertyEstimatorService;
 import com.itesm.fennec.domain.model.PropertyEstimator;
+import com.itesm.fennec.domain.model.PredictionResult;
+
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-
-@Path("/api/propertyEstimator")
+@Path("api/estimar")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PropertyEstimatorController {
-    @Inject
-    EstimarValorUseCase estimarValor;
 
-    @Path("/departamento")
+    @Inject
+    PropertyEstimatorService service;
+
     @POST
-    public Response estimarPropiedad(PropertyEstimator estimator) {
-       estimator = estimarValor.execute(estimator);
-        return Response.ok().entity(estimator).build();
+    @Path("/departamento")
+    public Response estimarValor(PropertyEstimator request) {
+        PredictionResult result = service.estimar(request);
+        return Response.ok(result).build();
     }
 
-    @Path("/casa")
     @POST
-    public Response estimarPropiedadCasa(PropertyEstimator estimator) {
-       estimator = estimarValor.executeCasa(estimator);
-       return Response.ok().entity(estimator).build();
+    @Path("/casa")
+    public Response estimarValorCasa(PropertyEstimator request) {
+      PredictionResult result = service.estimarHouse(request);
+      return Response.ok(result).build();
     }
 }

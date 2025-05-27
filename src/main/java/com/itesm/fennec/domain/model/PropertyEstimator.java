@@ -15,5 +15,4 @@ public class PropertyEstimator {
     private int banos;
     private int recamaras;
     private int estacionamientos;
-    private double predicted_price;
 }

@@ -1,21 +1,23 @@
 package com.itesm.fennec.application.useCase;
 
 import com.itesm.fennec.application.service.PropertyEstimatorService;
+import com.itesm.fennec.domain.model.PredictionResult;
 import com.itesm.fennec.domain.model.PropertyEstimator;
+import com.itesm.fennec.domain.repository.PropertyEstimatorRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class EstimarValorUseCase {
+
     @Inject
-    PropertyEstimatorService propertyEstimatorService;
-    public PropertyEstimator execute(PropertyEstimator propertyEstimator) {
-        propertyEstimator = propertyEstimatorService.estimarValorDepartamento(propertyEstimator);
-        return propertyEstimator;
+    PropertyEstimatorRepository repository;
+
+    public PredictionResult execute(PropertyEstimator propertyEstimator) {
+        return repository.estimarValorDepartamento(propertyEstimator);
     }
 
-    public PropertyEstimator executeCasa(PropertyEstimator propertyEstimator) {
-        propertyEstimator = propertyEstimatorService.estimarValorCasa(propertyEstimator);
-        return propertyEstimator;
+    public PredictionResult executeHouse(PropertyEstimator propertyEstimator) {
+        return repository.estimarValorCasa(propertyEstimator);
     }
 }
