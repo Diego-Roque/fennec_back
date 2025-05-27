@@ -15,10 +15,14 @@ import jakarta.ws.rs.ext.Provider;
 @Priority(Priorities.AUTHENTICATION)
 public class FirebaseAuthFilter implements ContainerRequestFilter {
 
+
     @Override
     public void filter(ContainerRequestContext requestContext){
         String path = requestContext.getUriInfo().getPath();
         if (path.endsWith("/auth/signup")) {
+            return;
+        }
+        if (path.endsWith("/api/investment")) {
             return;
         }
 
