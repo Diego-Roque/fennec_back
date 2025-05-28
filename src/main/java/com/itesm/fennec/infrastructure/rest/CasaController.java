@@ -51,4 +51,20 @@ public class CasaController {
         return Response.ok(m2).build();
     }
 
+    @POST
+    @Path("/m2_todas")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerPromedioM2Todas() {
+        try {
+            Double promedio = service.PromedioTodasCasas();
+            return Response.ok(promedio).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener el promedio de precio por m²: " + e.getMessage())
+                    .build();
+        }
+    }
+
+
 }

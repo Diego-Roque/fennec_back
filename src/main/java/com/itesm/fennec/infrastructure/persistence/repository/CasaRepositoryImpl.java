@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @ApplicationScoped
@@ -45,5 +46,23 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
                 .average()
                 .orElse(0.0);
     }
+
+    @Override
+    @Transactional
+    public Double obtenerPromedioTodasCasas() {
+        List<Double> precios = findAll()
+                .stream()
+                .map(CasaEntity::getPrecio)
+                .filter(Objects::nonNull)
+                .toList();
+
+        if (precios.isEmpty()) {
+            return 0.0;
+        }
+
+        double suma = precios.stream().mapToDouble(Double::doubleValue).sum();
+        return suma / precios.size();
+    }
+
 
 }

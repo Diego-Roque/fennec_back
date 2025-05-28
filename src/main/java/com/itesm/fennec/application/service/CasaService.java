@@ -3,6 +3,7 @@ package com.itesm.fennec.application.service;
 import com.itesm.fennec.application.useCase.ContarCasasPorAlcaldiaUseCase;
 import com.itesm.fennec.application.useCase.ObtenerPromedioM2UseCase;
 import com.itesm.fennec.application.useCase.ObtenerPromedioPrecioCasaUseCase;
+import com.itesm.fennec.application.useCase.PromedioTodasCasasUseCase;
 import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,6 +32,12 @@ public class CasaService {
 
     public double obtenerPromedioM2(String alcaldia) {
         return obtenerPromedioM2UseCase.execute(alcaldia);
+    }
+
+    @Inject
+    PromedioTodasCasasUseCase obtenerPromedioTodasCasasUseCase;
+    public double PromedioTodasCasas() {
+        return obtenerPromedioTodasCasasUseCase.execute();
     }
 
 }
