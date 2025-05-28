@@ -30,6 +30,10 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
+        if (path.endsWith("/api/casa/m2_promedio")) {
+            return;
+        }
+
 
         String authHeader = requestContext.getHeaderString("Authorization");
 

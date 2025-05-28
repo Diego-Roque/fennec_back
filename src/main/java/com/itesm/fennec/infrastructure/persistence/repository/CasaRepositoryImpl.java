@@ -7,6 +7,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 
 
 @ApplicationScoped
@@ -31,4 +33,17 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
     public Long contarPorAlcaldia(String alcaldia) {
         return count("alcaldia = ?1", alcaldia);
     }
+
+    @Override
+    @Transactional
+    public Double obtenerPromedioM2(String alcaldia) {
+        List<CasaEntity> casas = find("alcaldia", alcaldia).list();
+        return casas.stream()
+                .map(CasaEntity::getPrecio_por_m2)
+                .filter(Objects::nonNull)
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+    }
+
 }

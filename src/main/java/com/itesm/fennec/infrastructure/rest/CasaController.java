@@ -42,4 +42,13 @@ public class CasaController {
         return Response.ok(cantidad).build();
     }
 
+    @POST
+    @Path("/m2_promedio")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerPromedioM2(AlcaldiaRequest request) {
+        double m2 = service.obtenerPromedioM2(request.getAlcaldia());
+        return Response.ok(m2).build();
+    }
+
 }
