@@ -32,4 +32,14 @@ public class CasaController {
         CasaPrecioPromedioResult result = service.obtenerPromedio(alcaldia);
         return Response.ok(result).build();
     }
+
+    @POST
+    @Path("/cantidad")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response contarPorAlcaldia(AlcaldiaRequest request) {
+        Long cantidad = service.contarPorAlcaldia(request.getAlcaldia());
+        return Response.ok(cantidad).build();
+    }
+
 }

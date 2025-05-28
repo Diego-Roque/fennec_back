@@ -1,5 +1,6 @@
 package com.itesm.fennec.application.service;
 
+import com.itesm.fennec.application.useCase.ContarCasasPorAlcaldiaUseCase;
 import com.itesm.fennec.application.useCase.ObtenerPromedioPrecioCasaUseCase;
 import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,4 +15,12 @@ public class CasaService {
     public CasaPrecioPromedioResult obtenerPromedio(String alcaldia) {
         return useCase.execute(alcaldia);
     }
+
+    @Inject
+    ContarCasasPorAlcaldiaUseCase contarCasasPorAlcaldiaUseCase;
+
+    public Long contarPorAlcaldia(String alcaldia) {
+        return contarCasasPorAlcaldiaUseCase.execute(alcaldia);
+    }
+
 }

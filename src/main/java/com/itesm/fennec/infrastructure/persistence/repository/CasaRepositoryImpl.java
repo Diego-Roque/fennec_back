@@ -25,4 +25,10 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
                 .orElse(0.0);
         return new CasaPrecioPromedioResult(alcaldia, promedio);
     }
+
+    @Override
+    @Transactional
+    public Long contarPorAlcaldia(String alcaldia) {
+        return count("alcaldia = ?1", alcaldia);
+    }
 }

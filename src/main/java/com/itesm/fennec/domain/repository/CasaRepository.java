@@ -6,4 +6,6 @@ import java.math.BigDecimal;
 
 public interface CasaRepository {
     CasaPrecioPromedioResult obtenerPromedio(String alcaldia);
+    Long contarPorAlcaldia(String alcaldia);
+
 }
