@@ -38,6 +38,9 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
+        if (path.endsWith("/api/create-new-report")) {
+            return;
+        }
 
         String authHeader = requestContext.getHeaderString("Authorization");
 

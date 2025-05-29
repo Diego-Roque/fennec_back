@@ -1,7 +1,10 @@
 package com.itesm.fennec.infrastructure.persistence.mapper;
 
 import com.itesm.fennec.domain.model.InformeValuacion;
+import com.itesm.fennec.infrastructure.dto.GenerarReporteDTO;
 import com.itesm.fennec.infrastructure.persistence.entity.ReporteEntity;
+
+import java.math.BigDecimal;
 
 public class ReporteMapper {
 
@@ -23,7 +26,28 @@ public class ReporteMapper {
         entity.setValorEstimado(model.getValorEstimado());
         entity.setAnotacionesValuacion(model.getAnotacionesValuacion());
         entity.setIdUsuario(model.getIdUsuario());
+        System.out.println("Entidad mapeada: " + entity);
 
         return entity;
+    }
+
+    public static InformeValuacion toDomain(GenerarReporteDTO dto) {
+        InformeValuacion informe = new InformeValuacion();
+
+        informe.setDireccion(dto.direccion);
+        informe.setColonia(dto.colonia);
+        informe.setAlcaldia(dto.alcaldia);
+        informe.setCodigoPostal(dto.codigoPostal);
+        informe.setTipoPropiedad(dto.tipoPropiedad);
+        informe.setRecamaras(dto.recamaras);
+        informe.setBanos(dto.banos);
+        informe.setEstacionamientos(dto.estacionamientos);
+        informe.setDimensionesM2(BigDecimal.valueOf(dto.dimensionesM2));
+        informe.setAntiguedadAnos(dto.antiguedadAnos);
+        informe.setCondicionesPropiedad(dto.condicionesPropiedad);
+        informe.setAnotacionesExtra(dto.anotacionesExtra);
+        informe.setValorEstimado(BigDecimal.valueOf(dto.valorEstimado));
+        informe.setAnotacionesValuacion(dto.anotacionesValuacion);
+        return informe;
     }
 }
