@@ -7,4 +7,5 @@ public interface CasaRepository {
     Long contarPorAlcaldia(String alcaldia);
     Double obtenerPromedioM2(String alcaldia);
     Double obtenerPromedioTodasCasas();
+    Double obtenerPrecioM2();
 }

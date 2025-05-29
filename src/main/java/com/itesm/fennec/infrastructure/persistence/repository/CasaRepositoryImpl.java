@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 @ApplicationScoped
@@ -63,6 +62,24 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
         double suma = precios.stream().mapToDouble(Double::doubleValue).sum();
         return suma / precios.size();
     }
+
+    @Override
+    @Transactional
+    public Double obtenerPrecioM2() {
+        List<Double> precios = findAll()
+                .stream()
+                .map(CasaEntity::getPrecio_por_m2)
+                .filter(Objects::nonNull)
+                .toList();
+
+        if (precios.isEmpty()) {
+            return 0.0;
+        }
+
+        double sum = precios.stream().mapToDouble(Double::doubleValue).sum();
+        return sum / precios.size();
+    }
+
 
 
 }

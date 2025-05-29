@@ -30,7 +30,11 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
-        if (path.endsWith("/api/casa/m2_promedio")) {
+        if (path.endsWith("/api/casa/promedio_todas")) {
+            return;
+        }
+
+        if (path.endsWith("/api/casa/m2_todas")) {
             return;
         }
 
