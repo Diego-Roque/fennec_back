@@ -1,29 +1,25 @@
 package com.itesm.fennec.infrastructure.rest;
 
-import com.itesm.fennec.application.service.ReporteService;
+import com.itesm.fennec.application.useCase.InsertarInformacionValuacionUseCase;
 import com.itesm.fennec.domain.model.InformeValuacion;
-
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/api")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ReporteController {
 
     @Inject
-    ReporteService reporteService;
+    InsertarInformacionValuacionUseCase insertarInformacionValuacionUseCase;
 
     @POST
     @Path("/create-new-report")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response generarReporte(InformeValuacion informe) {
         try {
-            reporteService.generar(informe);
+            insertarInformacionValuacionUseCase.execute(informe);
             return Response.ok().entity("{\"mensaje\": \"Reporte generado exitosamente\"}").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
