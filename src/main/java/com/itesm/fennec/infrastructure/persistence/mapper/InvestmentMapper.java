@@ -18,7 +18,25 @@ public class InvestmentMapper {
         entity.setBanos(investment.getBanos());
         entity.setRecamaras(investment.getRecamaras());
         entity.setEstacionamientos(investment.getEstacionamientos());
+        entity.setId_usuario(investment.getId_usuario());
 
         return entity;
+    }
+    public static Investment toDomain(InvestmentEntity entity) {
+        Investment investment = new Investment();
+        investment.setAlcaldia(entity.getAlcaldia());
+        investment.setColonia(entity.getColonia());
+        investment.setDescripcion(entity.getDescripcion());
+        investment.setDireccion(entity.getDireccion());
+        investment.setDimensiones_m2(entity.getDimensiones_m2());
+        investment.setFecha_inversion(entity.getFecha_inversion());
+        investment.setMonto_invertido(entity.getMonto_invertido());
+        investment.setPrecio_propiedad(entity.getPrecio_propiedad());
+        investment.setTipo_propiedad(entity.getTipo_propiedad());
+        investment.setBanos(entity.getBanos());
+        investment.setRecamaras(entity.getRecamaras());
+        investment.setEstacionamientos(entity.getEstacionamientos());
+        investment.setId_usuario(entity.getId_usuario());
+        return investment;
     }
 }
