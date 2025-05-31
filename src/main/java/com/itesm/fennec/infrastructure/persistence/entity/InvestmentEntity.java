@@ -59,6 +59,6 @@ public class InvestmentEntity  extends PanacheEntityBase {
     private int estacionamientos;
 
 
-    @Column(name = "id_usuario", nullable = false)
+    @Column(name = "id_usuario")
     private String id_usuario;
 }

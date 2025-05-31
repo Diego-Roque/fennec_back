@@ -23,10 +23,20 @@ public class InvestmentController {
 
 
     @POST
-    public Response insertarInversion(Investment investment) {
+    public Response insertarInversion(@HeaderParam("Authorization") String authHeader,Investment investment) {
+        if (authHeader == null || authHeader.isEmpty()) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized").build();
+        }
+        String token = authHeader.substring(7);
+        String firebaseId = firebaseUserService.getUidFromToken(token);
+        System.out.println(firebaseId);
+        investment.setId_usuario(firebaseId);
+
         investment = insertarInversionUseCase.execute(investment);
         return Response.ok(investment).build();
     }
+
+
 
     @Inject
     FirebaseUserService firebaseUserService;

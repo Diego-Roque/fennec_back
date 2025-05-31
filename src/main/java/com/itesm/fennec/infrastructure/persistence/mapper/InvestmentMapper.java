@@ -18,6 +18,7 @@ public class InvestmentMapper {
         entity.setBanos(investment.getBanos());
         entity.setRecamaras(investment.getRecamaras());
         entity.setEstacionamientos(investment.getEstacionamientos());
+        entity.setId_usuario(investment.getId_usuario());
 
         return entity;
     }
