@@ -1,11 +1,17 @@
 package com.itesm.fennec.infrastructure.persistence.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.itesm.fennec.domain.model.Casa;
+import com.itesm.fennec.domain.model.Departamento;
 import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
 import com.itesm.fennec.domain.repository.DepartamentoRepository;
+import com.itesm.fennec.infrastructure.persistence.entity.CasaEntity;
 import com.itesm.fennec.infrastructure.persistence.entity.DepartamentoEntity;
+import com.itesm.fennec.infrastructure.persistence.mapper.CasaMapper;
+import com.itesm.fennec.infrastructure.persistence.mapper.DepartamentoMapper;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -76,5 +82,15 @@ public class DepartamentoRepositoryImpl implements DepartamentoRepository, Panac
 
         double sum = precios.stream().mapToDouble(Double::doubleValue).sum();
         return sum / precios.size();
+    }
+
+    @Override
+    public List<Departamento> obtenerTodosDepartamentos() {
+        List<DepartamentoEntity> departamentoEntities = findAll().list();
+        List<Departamento> departamentos = new ArrayList<>();
+        for (DepartamentoEntity departamentoEntity : departamentoEntities) {
+            departamentos.add(DepartamentoMapper.toDomain(departamentoEntity));
+        }
+        return departamentos;
     }
 }

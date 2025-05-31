@@ -1,13 +1,18 @@
 package com.itesm.fennec.infrastructure.rest;
 
 import com.itesm.fennec.application.service.DepartamentoService;
+import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
+import com.itesm.fennec.application.useCase.ObtenerTodosDepartamentosUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
+import com.itesm.fennec.domain.model.Casa;
+import com.itesm.fennec.domain.model.Departamento;
 import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
 
 
 @Path("api/departamento")
@@ -77,6 +82,22 @@ public class DepartamentoController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error al obtener el promedio de precio por m²: " + e.getMessage())
+                    .build();
+        }
+    }
+    @Inject
+    ObtenerTodosDepartamentosUseCase obtenerDepartamentos;
+    @GET
+    @Path("list-departamentos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerTodosLosDepartamentos() {
+        try {
+            List<Departamento> departamentos = obtenerDepartamentos.execute();
+            return Response.ok(departamentos).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener la lista de casas: " + e.getMessage())
                     .build();
         }
     }

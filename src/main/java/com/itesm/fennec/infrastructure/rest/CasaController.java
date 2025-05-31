@@ -1,13 +1,17 @@
 package com.itesm.fennec.infrastructure.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itesm.fennec.application.service.CasaService;
+import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
+import com.itesm.fennec.domain.model.Casa;
 import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
 
 
 @Path("api/casa")
@@ -77,6 +81,23 @@ public class CasaController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error al obtener el promedio de precio por m²: " + e.getMessage())
+                    .build();
+        }
+    }
+
+    @Inject
+    ObtenerTodasCasasUseCase obtenerTodasCasasUseCase;
+    @GET
+    @Path("list-casas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerTodasLasCasas() {
+        try {
+            List<Casa> casas = obtenerTodasCasasUseCase.execute();
+            return Response.ok(casas).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener la lista de casas: " + e.getMessage())
                     .build();
         }
     }

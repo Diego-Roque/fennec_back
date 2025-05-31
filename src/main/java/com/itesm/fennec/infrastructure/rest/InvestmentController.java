@@ -60,7 +60,7 @@ public class InvestmentController {
 
         } catch(Exception e){
             e.printStackTrace();
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).entity("No Investment found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("No Investment found").build();
         }
 
 

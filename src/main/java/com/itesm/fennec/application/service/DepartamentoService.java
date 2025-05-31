@@ -1,13 +1,21 @@
 package com.itesm.fennec.application.service;
 
 import com.itesm.fennec.application.useCase.*;
+import com.itesm.fennec.domain.model.Departamento;
 import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
 
+import com.itesm.fennec.domain.model.Investment;
+import com.itesm.fennec.domain.repository.DepartamentoRepository;
+import com.itesm.fennec.domain.repository.InvestmentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
+
 @ApplicationScoped
 public class DepartamentoService {
+    @Inject
+    DepartamentoRepository departamentoRepository;
 
     @Inject
     ObtenerPromedioPrecioDepartamentoUseCase useCase;
@@ -37,5 +45,9 @@ public class DepartamentoService {
     ObtenerPrecioM2UseCase obtenerPrecioM2UseCase;
     public Double obtenerPrecioM2UseCase() {
         return obtenerPrecioM2UseCase.execute(true);
+    }
+
+    public List<Departamento> obtenerTodosDepartamentos() {
+        return departamentoRepository.obtenerTodosDepartamentos();
     }
 }

@@ -1,12 +1,15 @@
 package com.itesm.fennec.infrastructure.persistence.repository;
 
+import com.itesm.fennec.domain.model.Casa;
 import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
 import com.itesm.fennec.domain.repository.CasaRepository;
 import com.itesm.fennec.infrastructure.persistence.entity.CasaEntity;
+import com.itesm.fennec.infrastructure.persistence.mapper.CasaMapper;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,5 +81,14 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
 
         double sum = precios.stream().mapToDouble(Double::doubleValue).sum();
         return sum / precios.size();
+    }
+    @Override
+    public List<Casa> obtenerTodasCasas() {
+        List<CasaEntity> casasEntities = findAll().list();
+        List<Casa> casas = new ArrayList<>();
+        for (CasaEntity casaEntity : casasEntities) {
+            casas.add(CasaMapper.toDomain(casaEntity));
+        }
+        return casas;
     }
 }
