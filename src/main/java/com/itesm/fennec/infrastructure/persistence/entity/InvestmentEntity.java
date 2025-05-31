@@ -58,7 +58,7 @@ public class InvestmentEntity  extends PanacheEntityBase {
     @Column(name = "estacionamientos")
     private int estacionamientos;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private UserEntity id_usuario;
+
+    @Column(name = "id_usuario", nullable = false)
+    private String id_usuario;
 }
