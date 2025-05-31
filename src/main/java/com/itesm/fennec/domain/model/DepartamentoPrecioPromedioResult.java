@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class CasaPrecioPromedioResult {
+public class DepartamentoPrecioPromedioResult {
     private String alcaldia;
     private double promedio;
 }

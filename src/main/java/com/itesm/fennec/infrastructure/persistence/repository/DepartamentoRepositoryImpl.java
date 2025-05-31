@@ -1,31 +1,29 @@
 package com.itesm.fennec.infrastructure.persistence.repository;
 
-import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
-import com.itesm.fennec.domain.repository.CasaRepository;
-import com.itesm.fennec.infrastructure.persistence.entity.CasaEntity;
+import java.util.List;
+import java.util.Objects;
+
+import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
+import com.itesm.fennec.domain.repository.DepartamentoRepository;
+import com.itesm.fennec.infrastructure.persistence.entity.DepartamentoEntity;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-
-
 @ApplicationScoped
-public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<CasaEntity> {
-
+public class DepartamentoRepositoryImpl implements DepartamentoRepository, PanacheRepository<DepartamentoEntity>  {
     @Override
     @Transactional
-    public CasaPrecioPromedioResult obtenerPromedio(String alcaldia) {
+    public DepartamentoPrecioPromedioResult obtenerPromedio(String alcaldia) {
         double promedio = find("alcaldia", alcaldia)
                 .stream()
-                .map(CasaEntity.class::cast)
-                .map(CasaEntity::getPrecio)
+                .map(DepartamentoEntity.class::cast)
+                .map(DepartamentoEntity::getPrecio)
                 .filter(p -> p != null)
                 .mapToDouble(Double::doubleValue)
                 .average()
                 .orElse(0.0);
-        return new CasaPrecioPromedioResult(alcaldia, promedio);
+        return new DepartamentoPrecioPromedioResult(alcaldia, promedio);
     }
 
     @Override
@@ -37,9 +35,9 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
     @Override
     @Transactional
     public Double obtenerPromedioM2(String alcaldia) {
-        List<CasaEntity> casas = find("alcaldia", alcaldia).list();
-        return casas.stream()
-                .map(CasaEntity::getPrecio_por_m2)
+        List<DepartamentoEntity> departamentos = find("alcaldia", alcaldia).list();
+        return departamentos.stream()
+                .map(DepartamentoEntity::getPrecio_por_m2)
                 .filter(Objects::nonNull)
                 .mapToDouble(Double::doubleValue)
                 .average()
@@ -48,10 +46,10 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
 
     @Override
     @Transactional
-    public Double obtenerPromedioTodasCasas() {
+    public Double obtenerPromedioTodosDepartamentos() {
         List<Double> precios = findAll()
                 .stream()
-                .map(CasaEntity::getPrecio)
+                .map(DepartamentoEntity::getPrecio)
                 .filter(Objects::nonNull)
                 .toList();
 
@@ -68,7 +66,7 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
     public Double obtenerPrecioM2() {
         List<Double> precios = findAll()
                 .stream()
-                .map(CasaEntity::getPrecio_por_m2)
+                .map(DepartamentoEntity::getPrecio_por_m2)
                 .filter(Objects::nonNull)
                 .toList();
 

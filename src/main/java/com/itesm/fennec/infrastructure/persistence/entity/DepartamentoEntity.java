@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class DepartamentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_casa;
+    private int id_departamento;
 
     @Column(name="direccion")
     private String direccion;
@@ -54,5 +54,4 @@ public class DepartamentoEntity {
 
     @Column(name="habitaciones_totales")
     private BigDecimal habitaciones_totales;
-
 }

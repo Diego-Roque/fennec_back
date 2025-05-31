@@ -21,9 +21,8 @@ public class InvestmentEntity  extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_inversion;
 
-    @Column(name ="monto_invertido" )
+    @Column(name = "monto_invertido" )
     private BigDecimal monto_invertido;
-
 
     @Column(name = "precio_propiedad", nullable = false)
     private BigDecimal precio_propiedad;
@@ -62,6 +61,4 @@ public class InvestmentEntity  extends PanacheEntityBase {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private UserEntity id_usuario;
-
-
 }

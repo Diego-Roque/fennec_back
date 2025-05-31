@@ -1,8 +1,8 @@
 package com.itesm.fennec.infrastructure.rest;
 
-import com.itesm.fennec.application.service.CasaService;
+import com.itesm.fennec.application.service.DepartamentoService;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
-import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
+import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -10,13 +10,13 @@ import jakarta.ws.rs.core.Response;
 
 
 
-@Path("api/casa")
+@Path("api/departamento")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class CasaController {
+public class DepartamentoController {
 
     @Inject
-    CasaService service;
+    DepartamentoService service;
 
     @POST
     @Path("/promedio")
@@ -29,7 +29,7 @@ public class CasaController {
                     .build();
         }
 
-        CasaPrecioPromedioResult result = service.obtenerPromedio(alcaldia);
+        DepartamentoPrecioPromedioResult result = service.obtenerPromedio(alcaldia);
         return Response.ok(result).build();
     }
 
@@ -52,12 +52,12 @@ public class CasaController {
     }
 
     @POST
-    @Path("/promedio_todas")
+    @Path("/promedio_todos")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response promedioTodasCasas() {
+    public Response promedioTodosDepartamentos() {
         try {
-            Double promedio = service.PromedioTodasCasas();
+            Double promedio = service.PromedioTodosDepartamentos();
             return Response.ok(promedio).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -67,7 +67,7 @@ public class CasaController {
     }
 
     @POST
-    @Path("/m2_todas")
+    @Path("/m2_todos")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerPrecioM2() {
