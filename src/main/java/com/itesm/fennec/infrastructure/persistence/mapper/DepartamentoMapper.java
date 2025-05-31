@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class DepartamentoMapper {
     public static Departamento toDomain(DepartamentoEntity entity) {
         Departamento departamento = new Departamento();
+        departamento.setDireccion(entity.getDireccion());
         departamento.setPrecio(BigDecimal.valueOf(entity.getPrecio()));
         departamento.setAlcaldia(entity.getAlcaldia());
         departamento.setColonia(entity.getColonia());
