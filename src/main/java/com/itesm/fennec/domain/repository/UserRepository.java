@@ -1,9 +1,13 @@
 package com.itesm.fennec.domain.repository;
+import java.util.List;
+
 import com.itesm.fennec.domain.model.User;
+import com.itesm.fennec.infrastructure.persistence.entity.UserEntity;
 
 public interface UserRepository {
     User findByFirebaseId(String firebaseId);
+    User findByFirebaseUid(String uid);
     User createUser(User user);
-    User findByUid(String uid);
     User deleteUser(String uid);
+    List<UserEntity> listAll();
 }

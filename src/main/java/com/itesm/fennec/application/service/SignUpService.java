@@ -25,6 +25,7 @@ public class SignUpService {
         User user = new User();
         user.setFirebaseId(userRecord.getUid());
         user.setNombre(nombre);
+        user.setEmail(email);
         user.setTelefono(telefono);
         user.setTipoRole(tipoRole);
 

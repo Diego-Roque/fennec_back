@@ -1,5 +1,7 @@
 package com.itesm.fennec.infrastructure.persistence.repository;
 
+import java.util.List;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -13,6 +15,7 @@ import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase<UserEntity, Integer> {
+    // Keep the original method exactly as it was (don't rename it)
     @Override
     public User findByFirebaseId(String firebaseId) {
         try {
@@ -26,6 +29,15 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         }
     }
 
+    @Override
+    public User findByFirebaseUid(String uid) {
+        UserEntity userEntity = find("firebaseId", uid).firstResult();
+        if (userEntity == null) {
+            return null;
+        }
+        return UserMapper.toDomain(userEntity);
+    }
+    
     @Override
     @Transactional
     public User createUser(User user) {
@@ -44,16 +56,6 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
 
     @Override
     @Transactional
-    public User findByUid(String uid) {
-        UserEntity userEntity = find("firebaseId", uid).firstResult();
-        if (userEntity == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        return UserMapper.toDomain(userEntity);
-    }
-
-    @Override
-    @Transactional
     public User deleteUser(String uid) {
         UserEntity userEntity = find("firebaseId", uid).firstResult();
         if (userEntity == null) {
@@ -62,14 +64,14 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
 
         userEntity.setTipoRole("inactive");
 
-
         getEntityManager().merge(userEntity);
         flush();
-
-
         return UserMapper.toDomain(userEntity);
     }
 
-
+    @Override
+    public List<UserEntity> listAll() {
+        return PanacheRepositoryBase.super.listAll();
+    }
 
 }

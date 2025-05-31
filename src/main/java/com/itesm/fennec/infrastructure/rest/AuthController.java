@@ -6,7 +6,9 @@ import com.google.firebase.auth.FirebaseToken;
 import com.itesm.fennec.application.useCase.auth.SignUpUseCase;
 import com.itesm.fennec.domain.model.User;
 import com.itesm.fennec.domain.repository.UserRepository;
+import com.itesm.fennec.infrastructure.dto.LoginDTO;
 import com.itesm.fennec.infrastructure.dto.auth.SignUpDTO;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -18,7 +20,6 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Path("/auth")
 public class AuthController {
@@ -41,6 +42,40 @@ public class AuthController {
                     .build();
         }
     }
+
+    @POST
+    @Path("/login")
+    public Response login(LoginDTO loginDTO) {
+        try {
+            System.out.println("=== LOGIN DEBUG ===");
+            System.out.println("Received firebaseId: " + loginDTO.getFirebaseId());
+            
+            User user = userRepository.findByFirebaseUid(loginDTO.getFirebaseId());
+            
+            if (user == null) {
+                throw new RuntimeException("User not found");
+            }
+            
+            System.out.println("Login successful for user: " + user.getEmail());
+            
+            // Use simple Map - no DTO conversion
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Login successful");
+            response.put("email", user.getEmail());
+            response.put("nombre", user.getNombre());
+            response.put("uid", user.getFirebaseId());
+            
+            System.out.println("About to return response");
+            return Response.ok().entity(response).build();
+            
+        } catch (Exception e) {
+            System.out.println("LOGIN ERROR: " + e.getMessage());
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Account not found in the system. Please sign up first.");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(error).build();
+        }
+    }
+
     @POST
     @Path("/delete/user")
     @Produces(MediaType.APPLICATION_JSON)

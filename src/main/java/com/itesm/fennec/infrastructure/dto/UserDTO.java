@@ -20,5 +20,4 @@ public class UserDTO {
         this.email = email;
         this.telefono = telefono;
     }
-
 }

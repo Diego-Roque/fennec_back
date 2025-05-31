@@ -28,11 +28,13 @@ public class UserMapper {
     }
 
     public static UserDTO toDTO(User user) {
+        System.out.println("Converting user to DTO: " + user.getEmail());
         UserDTO userDTO = new UserDTO();
         userDTO.setUid(user.getFirebaseId());
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getNombre());
         userDTO.setTelefono(user.getTelefono());
+        System.out.println("DTO created successfully");
         return userDTO;
     }
 }
