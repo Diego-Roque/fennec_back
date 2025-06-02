@@ -10,4 +10,5 @@ public interface UserRepository {
     User createUser(User user);
     User deleteUser(String uid);
     List<UserEntity> listAll();
+    User updatePhoneNumber(String uid, String phoneNumber);
 }

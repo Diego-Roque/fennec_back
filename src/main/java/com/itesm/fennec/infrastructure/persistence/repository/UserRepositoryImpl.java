@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase<UserEntity, Integer> {
-    // Keep the original method exactly as it was (don't rename it)
+
     @Override
     public User findByFirebaseId(String firebaseId) {
         try {
@@ -72,6 +72,19 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
     @Override
     public List<UserEntity> listAll() {
         return PanacheRepositoryBase.super.listAll();
+    }
+
+    @Override
+    @Transactional
+    public User updatePhoneNumber(String uid, String phone) {
+        UserEntity userEntity = find("firebaseId", uid).firstResult();
+        if (userEntity == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        userEntity.setTelefono(phone);
+        getEntityManager().merge(userEntity);
+        flush();
+        return UserMapper.toDomain(userEntity);
     }
 
 }

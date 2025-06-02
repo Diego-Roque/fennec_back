@@ -1,5 +1,6 @@
 package com.itesm.fennec.application.service;
 
+import com.itesm.fennec.application.useCase.ActualizarNumeroUseCase;
 import com.itesm.fennec.domain.model.User;
 import com.itesm.fennec.domain.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,5 +33,9 @@ public class UserService {
             throw new IllegalArgumentException("User not found");
         }
         return user;
+    }
+
+    public User actualizarNumero(String userId, String numero) {
+        return userRepository.updatePhoneNumber(userId, numero);
     }
 }

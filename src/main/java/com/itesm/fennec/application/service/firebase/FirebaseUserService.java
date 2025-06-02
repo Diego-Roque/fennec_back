@@ -4,6 +4,7 @@ package com.itesm.fennec.application.service.firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.itesm.fennec.domain.repository.FirebaseRepository;
 import com.itesm.fennec.domain.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -12,7 +13,8 @@ import jakarta.inject.Inject;
 public class FirebaseUserService {
 
     @Inject
-    UserRepository userRepository;
+    FirebaseRepository firebaseRepository;
+
 
     public String getEmailByFirebaseId(String firebaseId) {
         try {
@@ -24,12 +26,7 @@ public class FirebaseUserService {
     }
 
     public String getUidFromToken(String idToken) {
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-            return decodedToken.getUid();
-        } catch (Exception e) {
-            throw new RuntimeException("Token inválido", e);
-        }
+        return firebaseRepository.getUidFromToken(idToken);
     }
 
 }
