@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +28,6 @@ public class InformeValuacion {
     private BigDecimal valorEstimado;
     private String anotacionesValuacion;
     private String idUsuario;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaActualizacion;
 }

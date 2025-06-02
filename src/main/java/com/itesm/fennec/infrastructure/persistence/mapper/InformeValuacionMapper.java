@@ -28,4 +28,27 @@ public class InformeValuacionMapper {
         
         return entity;
     }
+    public static InformeValuacion toDomain(ReporteEntity entity) {
+        InformeValuacion informeValuacion = new InformeValuacion();
+        informeValuacion.setDireccion(entity.getDireccion());
+        informeValuacion.setColonia(entity.getColonia());
+        informeValuacion.setAlcaldia(entity.getAlcaldia());
+        informeValuacion.setCodigoPostal(entity.getCodigoPostal());
+        informeValuacion.setTipoPropiedad(entity.getTipoPropiedad());
+        informeValuacion.setRecamaras(entity.getRecamaras());
+        informeValuacion.setBanos(entity.getBanos());
+        informeValuacion.setEstacionamientos(entity.getEstacionamientos());
+        informeValuacion.setDimensionesM2(entity.getDimensionesM2());
+        informeValuacion.setAntiguedadAnos(entity.getAntiguedadAnos());
+        informeValuacion.setCondicionesPropiedad(entity.getCondicionesPropiedad());
+        informeValuacion.setAnotacionesExtra(entity.getAnotacionesExtra());
+        informeValuacion.setValorEstimado(entity.getValorEstimado());
+        informeValuacion.setAnotacionesValuacion(entity.getAnotacionesValuacion());
+        informeValuacion.setIdUsuario(entity.getIdUsuario());
+        informeValuacion.setFechaActualizacion(entity.getFechaActualizacion());
+        informeValuacion.setFechaCreacion(entity.getFechaCreacion());
+
+
+        return informeValuacion;
+    }
 }
