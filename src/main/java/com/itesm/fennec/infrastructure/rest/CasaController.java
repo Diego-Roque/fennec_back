@@ -1,6 +1,5 @@
 package com.itesm.fennec.infrastructure.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itesm.fennec.application.service.CasaService;
 import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
@@ -12,6 +11,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Path("api/casa")
@@ -85,8 +86,30 @@ public class CasaController {
         }
     }
 
-    @Inject
-    ObtenerTodasCasasUseCase obtenerTodasCasasUseCase;
+    @Inject 
+    ObtenerTodasCasasUseCase obtenerTodasCasasUseCase;  
+
+    @GET
+    @Path("/promedio-por-alcaldia")
+    public Response obtenerPromedioPorAlcaldia() {
+        try {
+            List<Casa> casas = obtenerTodasCasasUseCase.execute();
+            Map<String, String> promediosPorAlcaldia = casas.stream()
+                .collect(Collectors.groupingBy(
+                    Casa::getAlcaldia,
+                    Collectors.collectingAndThen(
+                        Collectors.averagingDouble(casa -> casa.getPrecio().doubleValue()),
+                        promedio -> String.format("%,.2f", promedio)
+                    )
+                ));
+            return Response.ok(promediosPorAlcaldia).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener promedios por alcaldía: " + e.getMessage())
+                    .build();
+        }
+    }
+
     @GET
     @Path("list-casas")
     @Produces(MediaType.APPLICATION_JSON)
