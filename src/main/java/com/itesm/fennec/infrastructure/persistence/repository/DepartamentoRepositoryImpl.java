@@ -93,4 +93,15 @@ public class DepartamentoRepositoryImpl implements DepartamentoRepository, Panac
         }
         return departamentos;
     }
+    @Override
+    public List<Departamento>obtenerMenorAlPromedioDepartamentos(){
+        double precioPromedio = obtenerPromedioTodosDepartamentos();
+
+        return findAll()
+                .stream()
+                .filter(departamento -> departamento.getPrecio() < precioPromedio)
+                .map(DepartamentoMapper::toDomain)
+                .limit(10)
+                .toList();
+    }
 }

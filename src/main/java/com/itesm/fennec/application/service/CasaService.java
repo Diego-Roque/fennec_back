@@ -49,5 +49,12 @@ public class CasaService {
     @Inject
     public List<Casa> obtenerTodasCasas(){return casaRepository.obtenerTodasCasas();}
 
+    @Inject
+    public List<Casa> obtenerMenorAlPromedioCasas(){
+        return casaRepository.obtenerMenorAlPromedioCasas();
+    }
+
+
+
 
 }

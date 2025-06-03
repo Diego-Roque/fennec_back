@@ -12,4 +12,5 @@ public interface CasaRepository {
     Double obtenerPromedioTodasCasas();
     Double obtenerPrecioM2();
     List<Casa> obtenerTodasCasas();
+    List<Casa> obtenerMenorAlPromedioCasas();
 }
