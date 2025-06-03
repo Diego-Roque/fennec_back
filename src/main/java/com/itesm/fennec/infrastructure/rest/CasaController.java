@@ -1,6 +1,7 @@
 package com.itesm.fennec.infrastructure.rest;
 
 import com.itesm.fennec.application.service.CasaService;
+import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioCasasUseCase;
 import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
 import com.itesm.fennec.domain.model.Casa;
@@ -124,4 +125,27 @@ public class CasaController {
                     .build();
         }
     }
+
+    @Inject
+    ObtenerMenorAlPromedioCasasUseCase obtenerMenorAlPromedioCasasUseCase;
+
+    @GET
+    @Path("/oportunidades")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerMenorAlPromedio() {
+        try {
+            List<Casa> oportunidades = obtenerMenorAlPromedioCasasUseCase.execute();
+            if (oportunidades == null || oportunidades.isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("No se encontraron casas por debajo del promedio").build();
+            }
+            return Response.ok(oportunidades).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener oportunidades").build();
+        }
+    }
+
+
 }

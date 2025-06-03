@@ -1,6 +1,8 @@
 package com.itesm.fennec.infrastructure.rest;
 
 import com.itesm.fennec.application.service.DepartamentoService;
+import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioCasasUseCase;
+import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioDepartamentoUseCase;
 import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
 import com.itesm.fennec.application.useCase.ObtenerTodosDepartamentosUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
@@ -99,6 +101,29 @@ public class DepartamentoController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error al obtener la lista de casas: " + e.getMessage())
                     .build();
+        }
+    }
+
+
+
+    @Inject
+    ObtenerMenorAlPromedioDepartamentoUseCase obtenerMenorAlPromedioDepartamentoUseCase;
+
+    @GET
+    @Path("/oportunidades")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerMenorAlPromedio() {
+        try {
+            List<Departamento> oportunidades = obtenerMenorAlPromedioDepartamentoUseCase.execute();
+            if (oportunidades == null || oportunidades.isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("No se encontraron departamentos por debajo del promedio").build();
+            }
+            return Response.ok(oportunidades).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener oportunidades").build();
         }
     }
 }

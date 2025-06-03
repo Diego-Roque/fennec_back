@@ -1,5 +1,6 @@
 package com.itesm.fennec.domain.repository;
 
+import com.itesm.fennec.domain.model.Casa;
 import com.itesm.fennec.domain.model.Departamento;
 import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
 
@@ -12,4 +13,5 @@ public interface DepartamentoRepository {
     Double obtenerPromedioTodosDepartamentos();
     Double obtenerPrecioM2();
     List<Departamento> obtenerTodosDepartamentos();
+    List<Departamento> obtenerMenorAlPromedioDepartamentos();
 }

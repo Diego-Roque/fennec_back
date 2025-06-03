@@ -50,4 +50,8 @@ public class DepartamentoService {
     public List<Departamento> obtenerTodosDepartamentos() {
         return departamentoRepository.obtenerTodosDepartamentos();
     }
+
+    public List<Departamento> obtenerMenorAlPromedioDepartamentos() {
+        return departamentoRepository.obtenerMenorAlPromedioDepartamentos();
+    }
 }

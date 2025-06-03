@@ -91,4 +91,16 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
         }
         return casas;
     }
+
+    @Override
+    public List<Casa>obtenerMenorAlPromedioCasas(){
+        double precioPromedio = obtenerPromedioTodasCasas();
+
+        return findAll()
+                .stream()
+                .filter(casa -> casa.getPrecio() < precioPromedio)
+                .map(CasaMapper::toDomain)
+                .limit(10)
+                .toList();
+    }
 }
