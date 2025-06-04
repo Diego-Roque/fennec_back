@@ -1,8 +1,7 @@
 package com.itesm.fennec.infrastructure.persistence.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.itesm.fennec.domain.model.Departamento;
 import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
@@ -15,6 +14,99 @@ import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class DepartamentoRepositoryImpl implements DepartamentoRepository, PanacheRepository<DepartamentoEntity>  {
+
+
+
+    @Override
+    public List<Departamento> findWithFilters(Map<String, Object> filtros, int pagina, int limite) {
+
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder("1=1");
+
+        if (filtros.containsKey("precioMin")) {
+            query.append(" AND precio >= :precioMin");
+            params.put("precioMin", filtros.get("precioMin"));
+        }
+        if (filtros.containsKey("precioMax")) {
+            query.append(" AND precio <= :precioMax");
+            params.put("precioMax", filtros.get("precioMax"));
+        }
+        if (filtros.containsKey("dimensionesMin")) {
+            query.append(" AND dimensionesM2 >= :dimensionesMin");
+            params.put("dimensionesMin", filtros.get("dimensionesMin"));
+        }
+        if (filtros.containsKey("dimensionesMax")) {
+            query.append(" AND dimensiones_m2 <= :dimensionesMax");
+            params.put("dimensionesMax", filtros.get("dimensionesMax"));
+        }
+        if (filtros.containsKey("banos")) {
+            query.append(" AND banos = :banos");
+            params.put("banos", filtros.get("banos"));
+        }
+        if (filtros.containsKey("habitaciones")) {
+            query.append(" AND habitacionesTotales = :habitaciones");
+            params.put("habitaciones", filtros.get("habitaciones"));
+        }
+        if (filtros.containsKey("estacionamientos")) {
+            query.append(" AND estacionamientos = :estacionamientos");
+            params.put("estacionamientos", filtros.get("estacionamientos"));
+        }
+        if (filtros.containsKey("alcaldia")) {
+            query.append(" AND alcaldia = :alcaldia");
+            params.put("alcaldia", filtros.get("alcaldia"));
+        }
+
+        return find(query.toString(), params)
+                .page(pagina - 1, limite)
+                .list()
+                .stream()
+                .map(DepartamentoMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long countWithFilters(Map<String, Object> filtros) {
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder("1=1");
+
+        if (filtros.containsKey("precioMin")) {
+            query.append(" AND precio >= :precioMin");
+            params.put("precioMin", filtros.get("precioMin"));
+        }
+        if (filtros.containsKey("precioMax")) {
+            query.append(" AND precio <= :precioMax");
+            params.put("precioMax", filtros.get("precioMax"));
+        }
+        if (filtros.containsKey("dimensionesMin")) {
+            query.append(" AND dimensionesM2 >= :dimensionesMin");
+            params.put("dimensionesMin", filtros.get("dimensionesMin"));
+        }
+        if (filtros.containsKey("dimensionesMax")) {
+            query.append(" AND dimensionesM2 <= :dimensionesMax");
+            params.put("dimensionesMax", filtros.get("dimensionesMax"));
+        }
+        if (filtros.containsKey("banos")) {
+            query.append(" AND banos = :banos");
+            params.put("banos", filtros.get("banos"));
+        }
+        if (filtros.containsKey("habitaciones")) {
+            query.append(" AND habitacionesTotales = :habitaciones");
+            params.put("habitaciones", filtros.get("habitaciones"));
+        }
+        if (filtros.containsKey("estacionamientos")) {
+            query.append(" AND estacionamientos = :estacionamientos");
+            params.put("estacionamientos", filtros.get("estacionamientos"));
+        }
+        if (filtros.containsKey("alcaldia")) {
+            query.append(" AND alcaldia = :alcaldia");
+            params.put("alcaldia", filtros.get("alcaldia"));
+        }
+
+        return count(query.toString(), params);
+    }
+
+
+
     @Override
     @Transactional
     public DepartamentoPrecioPromedioResult obtenerPromedio(String alcaldia) {

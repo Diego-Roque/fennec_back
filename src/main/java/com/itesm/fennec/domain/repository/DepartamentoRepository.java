@@ -5,6 +5,7 @@ import com.itesm.fennec.domain.model.Departamento;
 import com.itesm.fennec.domain.model.DepartamentoPrecioPromedioResult;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DepartamentoRepository {
     DepartamentoPrecioPromedioResult obtenerPromedio(String alcaldia);
@@ -14,4 +15,7 @@ public interface DepartamentoRepository {
     Double obtenerPrecioM2();
     List<Departamento> obtenerTodosDepartamentos();
     List<Departamento> obtenerMenorAlPromedioDepartamentos();
+    List<Departamento> findWithFilters(Map<String, Object> filtros, int pagina, int limite);
+    Long countWithFilters(Map<String, Object> filtros);
 }
+

@@ -9,9 +9,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @ApplicationScoped
@@ -82,6 +81,7 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
         double sum = precios.stream().mapToDouble(Double::doubleValue).sum();
         return sum / precios.size();
     }
+
     @Override
     public List<Casa> obtenerTodasCasas() {
         List<CasaEntity> casasEntities = findAll().list();
@@ -93,7 +93,7 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
     }
 
     @Override
-    public List<Casa>obtenerMenorAlPromedioCasas(){
+    public List<Casa> obtenerMenorAlPromedioCasas() {
         double precioPromedio = obtenerPromedioTodasCasas();
 
         return findAll()
@@ -102,5 +102,105 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
                 .map(CasaMapper::toDomain)
                 .limit(10)
                 .toList();
+    }
+
+    @Override
+    public List<Casa> findWithFilters(Map<String, Object> filtros, int pagina, int limite) {
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder("1=1");
+
+        if (filtros.containsKey("precioMin")) {
+            query.append(" AND precio >= :precioMin");
+            params.put("precioMin", filtros.get("precioMin"));
+        }
+        if (filtros.containsKey("precioMax")) {
+            query.append(" AND precio <= :precioMax");
+            params.put("precioMax", filtros.get("precioMax"));
+        }
+        if (filtros.containsKey("dimensionesMin")) {
+            query.append(" AND dimensiones_m2 >= :dimensionesMin");
+            params.put("dimensionesMin", filtros.get("dimensionesMin"));
+        }
+        if (filtros.containsKey("dimensionesMax")) {
+            query.append(" AND dimensiones_m2 <= :dimensionesMax");
+            params.put("dimensionesMax", filtros.get("dimensionesMax"));
+        }
+        if (filtros.containsKey("banos")) {
+            query.append(" AND banos = :banos");
+            params.put("banos", filtros.get("banos"));
+        }
+        if (filtros.containsKey("habitaciones")) {
+            query.append(" AND recamaras = :habitaciones");
+            params.put("habitaciones", filtros.get("habitaciones"));
+        }
+        if (filtros.containsKey("estacionamientos")) {
+            query.append(" AND estacionamientos = :estacionamientos");
+            params.put("estacionamientos", filtros.get("estacionamientos"));
+        }
+        if (filtros.containsKey("alcaldia")) {
+            query.append(" AND alcaldia = :alcaldia");
+            params.put("alcaldia", filtros.get("alcaldia"));
+        }
+
+        System.out.println("=========== FILTROS ENVIADOS DESDE CLIENTE ===========");
+        System.out.println("Query final: " + query);
+        System.out.println("Parámetros:");
+        params.forEach((k, v) -> System.out.println("  " + k + ": " + v));
+        System.out.println("Página: " + pagina + " | Límite: " + limite);
+
+        List<CasaEntity> entities = find(query.toString(), params)
+                .page(pagina - 1, limite)
+                .list();
+
+        System.out.println("Número de entidades encontradas: " + entities.size());
+
+        List<Casa> casas = entities.stream()
+                .map(CasaMapper::toDomain)
+                .collect(Collectors.toList());
+
+        System.out.println("Número de casas mapeadas: " + casas.size());
+
+        return casas;
+    }
+
+    @Override
+    public Long countWithFilters(Map<String, Object> filtros) {
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder("1=1");
+
+        if (filtros.containsKey("precioMin")) {
+            query.append(" AND precio >= :precioMin");
+            params.put("precioMin", filtros.get("precioMin"));
+        }
+        if (filtros.containsKey("precioMax")) {
+            query.append(" AND precio <= :precioMax");
+            params.put("precioMax", filtros.get("precioMax"));
+        }
+        if (filtros.containsKey("dimensionesMin")) {
+            query.append(" AND dimensiones_m2 >= :dimensionesMin");
+            params.put("dimensionesMin", filtros.get("dimensionesMin"));
+        }
+        if (filtros.containsKey("dimensionesMax")) {
+            query.append(" AND dimensiones_m2 <= :dimensionesMax");
+            params.put("dimensionesMax", filtros.get("dimensionesMax"));
+        }
+        if (filtros.containsKey("banos")) {
+            query.append(" AND banos = :banos");
+            params.put("banos", filtros.get("banos"));
+        }
+        if (filtros.containsKey("habitaciones")) {
+            query.append(" AND recamaras = :habitaciones");
+            params.put("habitaciones", filtros.get("habitaciones"));
+        }
+        if (filtros.containsKey("estacionamientos")) {
+            query.append(" AND estacionamientos = :estacionamientos");
+            params.put("estacionamientos", filtros.get("estacionamientos"));
+        }
+        if (filtros.containsKey("alcaldia")) {
+            query.append(" AND alcaldia = :alcaldia");
+            params.put("alcaldia", filtros.get("alcaldia"));
+        }
+
+        return count(query.toString(), params);
     }
 }
