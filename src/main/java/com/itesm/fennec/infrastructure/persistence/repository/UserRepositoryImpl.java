@@ -37,18 +37,20 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         }
         return UserMapper.toDomain(userEntity);
     }
-    
+
     @Override
     @Transactional
     public User createUser(User user) {
         // Verificar si el usuario ya existe por firebaseId
         UserEntity existingUser = find("firebaseId", user.getFirebaseId()).firstResult();
         if (existingUser != null) {
+            
             return UserMapper.toDomain(existingUser);
         }
-        
+
         // Si no existe, crear nuevo usuario
         UserEntity userEntity = UserMapper.toEntity(user);
+        System.out.println("email repository: " + userEntity.getEmail());
         persist(userEntity);
         flush();
         return UserMapper.toDomain(userEntity);
@@ -86,5 +88,4 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         flush();
         return UserMapper.toDomain(userEntity);
     }
-
 }

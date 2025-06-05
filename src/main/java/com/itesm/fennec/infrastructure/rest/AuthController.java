@@ -29,6 +29,13 @@ public class AuthController {
     @POST
     @Path("/signup")
     public Response signUp(SignUpDTO signUpDTO) {
+        System.out.println("Signup request recibido:");
+        System.out.println("Email: " + signUpDTO.getEmail());
+        System.out.println("Password: " + signUpDTO.getPassword());
+        System.out.println("Nombre: " + signUpDTO.getNombre());
+        System.out.println("Teléfono: " + signUpDTO.getTelefono());
+        System.out.println("Tipo de Rol: " + signUpDTO.getTipoRole());
+
         try {
             signUpUseCase.execute(signUpDTO);
             Map<String, String> response = new HashMap<>();
