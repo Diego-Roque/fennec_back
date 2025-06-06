@@ -12,4 +12,5 @@ public interface UserRepository {
     List<UserEntity> listAll();
     User updatePhoneNumber(String uid, String phoneNumber);
     User updateSuscription(String uid, String suscripted);
+    User getRole(String uid);
 }

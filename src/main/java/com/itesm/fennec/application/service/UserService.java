@@ -42,4 +42,8 @@ public class UserService {
     public User actualizarSuscription(String userId, String tipoRole) {
         return userRepository.updateSuscription(userId, tipoRole);
     }
+
+    public User getRole(String userId){
+        return userRepository.getRole(userId);
+    }
 }

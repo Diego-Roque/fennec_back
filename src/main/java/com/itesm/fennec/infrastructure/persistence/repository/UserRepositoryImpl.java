@@ -12,6 +12,7 @@ import com.itesm.fennec.infrastructure.persistence.mapper.UserMapper;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 
 @ApplicationScoped
 public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase<UserEntity, Integer> {
@@ -100,5 +101,18 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         getEntityManager().merge(userEntity);
         flush();
         return UserMapper.toDomain(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public User getRole(String uid) {
+        UserEntity userEntity = find("firebaseId", uid).firstResult();
+        if (userEntity == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        User user = new User();
+        user.setTipoRole(userEntity.getTipoRole());
+        return user;
     }
 }

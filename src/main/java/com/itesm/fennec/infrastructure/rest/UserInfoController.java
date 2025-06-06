@@ -5,6 +5,7 @@ import com.itesm.fennec.application.service.UserService;
 import com.itesm.fennec.application.service.firebase.FirebaseUserService;
 import com.itesm.fennec.application.useCase.ActualizarNumeroUseCase;
 import com.itesm.fennec.application.useCase.GetUidFromTokenUseCase;
+import com.itesm.fennec.application.useCase.ObtenerRoleUseCase;
 import com.itesm.fennec.domain.model.User;
 import com.itesm.fennec.infrastructure.dto.PhoneUpdateDTO;
 import com.itesm.fennec.infrastructure.dto.UserDTO;
@@ -79,6 +80,29 @@ public class UserInfoController {
             return Response.status(Response.Status.UNAUTHORIZED).entity("User not found").build();
         }
         return Response.ok(userDTO).build();
+    }
+
+    @Inject
+    ObtenerRoleUseCase  obtenerRoleUseCase;
+
+    @GET
+    @Path("/get_rol")
+    public Response getRole(@HeaderParam("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Falta token").build();
+        }
+        String token = authHeader.substring(7);
+        String uid;
+        try {
+            uid = getUidFromTokenUseCase.execute(token);
+        } catch (Exception e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+        User user = obtenerRoleUseCase.execute(uid);
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("User not found").build();
+        }
+        return Response.ok(user).build();
     }
 
 
