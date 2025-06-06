@@ -16,4 +16,5 @@ public interface CasaRepository {
     List<Casa> obtenerMenorAlPromedioCasas();
     List<Casa> findWithFilters(Map<String, Object> filtros, int pagina, int limite);
     Long countWithFilters(Map<String, Object> filtros);
+    Long obtenerNumeroCasas();
 }
