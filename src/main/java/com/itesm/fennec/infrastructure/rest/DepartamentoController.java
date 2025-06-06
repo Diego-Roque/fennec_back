@@ -2,6 +2,8 @@ package com.itesm.fennec.infrastructure.rest;
 
 import com.itesm.fennec.application.service.DepartamentoService;
 import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioDepartamentoUseCase;
+import com.itesm.fennec.application.useCase.ObtenerNumCasasUseCase;
+import com.itesm.fennec.application.useCase.ObtenerNumDepartamentosUseCase;
 import com.itesm.fennec.application.useCase.ObtenerTodosDepartamentosUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
 import com.itesm.fennec.domain.model.Casa;
@@ -127,6 +129,22 @@ public class DepartamentoController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error al obtener la lista de casas: " + e.getMessage())
                     .build();
+        }
+    }
+    @Inject
+    ObtenerNumDepartamentosUseCase obtenerNumDepartamentosUseCase;
+    @GET
+    @Path("/num-departamentos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerNumCasas() {
+        try {
+            long numCasas = obtenerNumDepartamentosUseCase.execute();
+            return Response.ok(numCasas).build();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener departamentos").build();
         }
     }
 

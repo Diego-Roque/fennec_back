@@ -2,6 +2,7 @@ package com.itesm.fennec.infrastructure.rest;
 
 import com.itesm.fennec.application.service.CasaService;
 import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioCasasUseCase;
+import com.itesm.fennec.application.useCase.ObtenerNumCasasUseCase;
 import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
 import com.itesm.fennec.domain.model.Casa;
@@ -71,6 +72,22 @@ public class CasaController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error al obtener el promedio de precio por m²: " + e.getMessage())
                     .build();
+        }
+    }
+    @Inject
+    ObtenerNumCasasUseCase obtenerNumCasasUseCase;
+    @GET
+    @Path("/num-casas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenerNumCasas() {
+        try {
+            long numCasas = obtenerNumCasasUseCase.execute();
+            return Response.ok(numCasas).build();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error al obtener oportunidades").build();
         }
     }
 

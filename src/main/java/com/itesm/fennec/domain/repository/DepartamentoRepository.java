@@ -17,5 +17,6 @@ public interface DepartamentoRepository {
     List<Departamento> obtenerMenorAlPromedioDepartamentos();
     List<Departamento> findWithFilters(Map<String, Object> filtros, int pagina, int limite);
     Long countWithFilters(Map<String, Object> filtros);
+    Long obtenerNumeroDepartamentos();
 }
 

@@ -53,6 +53,10 @@ public class CasaService {
     public List<Casa> obtenerMenorAlPromedioCasas(){
         return casaRepository.obtenerMenorAlPromedioCasas();
     }
+    @Inject
+    public long obtenerNumeroCasas(){
+        return casaRepository.obtenerNumeroCasas();
+    }
 
 
 

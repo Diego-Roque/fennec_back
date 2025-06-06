@@ -155,6 +155,10 @@ public class DepartamentoRepositoryImpl implements DepartamentoRepository, Panac
         double suma = precios.stream().mapToDouble(Double::doubleValue).sum();
         return suma / precios.size();
     }
+    @Override
+    public Long obtenerNumeroDepartamentos(){
+        return findAll().count();
+    }
 
     @Override
     @Transactional

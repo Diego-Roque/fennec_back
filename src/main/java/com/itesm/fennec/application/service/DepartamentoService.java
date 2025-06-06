@@ -54,4 +54,8 @@ public class DepartamentoService {
     public List<Departamento> obtenerMenorAlPromedioDepartamentos() {
         return departamentoRepository.obtenerMenorAlPromedioDepartamentos();
     }
+    @Inject
+    public long obtenerNumeroCasas(){
+        return departamentoRepository.obtenerNumeroDepartamentos();
+    }
 }

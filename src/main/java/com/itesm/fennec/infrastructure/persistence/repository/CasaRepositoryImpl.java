@@ -162,6 +162,10 @@ public class CasaRepositoryImpl implements CasaRepository, PanacheRepository<Cas
 
         return casas;
     }
+    @Override
+    public Long obtenerNumeroCasas(){
+        return findAll().count();
+    }
 
     @Override
     public Long countWithFilters(Map<String, Object> filtros) {
