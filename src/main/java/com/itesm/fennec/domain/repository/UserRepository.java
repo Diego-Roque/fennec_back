@@ -11,4 +11,5 @@ public interface UserRepository {
     User deleteUser(String uid);
     List<UserEntity> listAll();
     User updatePhoneNumber(String uid, String phoneNumber);
+    User updateSuscription(String uid, String suscripted);
 }

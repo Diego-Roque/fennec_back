@@ -34,7 +34,10 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
 
-        if (path.endsWith("/api/casa/m2_todas")) {
+        if (path.endsWith("/api/departamento/oportunidades")) {
+            return;
+        }
+        if (path.endsWith("/api/casa/m2_promedio")) {
             return;
         }
 
@@ -42,6 +45,12 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
             return;
         }
         if (path.endsWith("/propiedades/filtrar")) {
+            return;
+        }
+        if (path.endsWith("/payments/checkout-subscription")) {
+            return;
+        }
+        if (path.endsWith("/payments/payment-success")) {
             return;
         }
 

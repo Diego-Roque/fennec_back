@@ -1,19 +1,15 @@
 package com.itesm.fennec.infrastructure.dto.payment;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProfessionalSubscriptionSuccessDTO {
     private String sessionId;
 
-    public ProfessionalSubscriptionSuccessDTO() {}
-
-    public ProfessionalSubscriptionSuccessDTO(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 }

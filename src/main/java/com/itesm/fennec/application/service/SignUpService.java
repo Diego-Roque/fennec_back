@@ -28,7 +28,6 @@ public class SignUpService {
         user.setEmail(email);
         user.setTelefono(telefono);
         user.setTipoRole(tipoRole);
-
         return userRepository.createUser(user);
     }
 }

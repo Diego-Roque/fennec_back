@@ -38,4 +38,8 @@ public class UserService {
     public User actualizarNumero(String userId, String numero) {
         return userRepository.updatePhoneNumber(userId, numero);
     }
+
+    public User actualizarSuscription(String userId, String tipoRole) {
+        return userRepository.updateSuscription(userId, tipoRole);
+    }
 }

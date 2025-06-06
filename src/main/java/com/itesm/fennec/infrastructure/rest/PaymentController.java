@@ -1,5 +1,7 @@
 package com.itesm.fennec.infrastructure.rest;
 
+import com.itesm.fennec.application.useCase.ActualizarSuscripcionUseCase;
+import com.itesm.fennec.domain.model.User;
 import com.itesm.fennec.infrastructure.dto.payment.CheckoutProfessionalDTO;
 import com.itesm.fennec.infrastructure.dto.payment.ProfessionalSubscriptionSuccessDTO;
 import jakarta.ws.rs.*;
@@ -30,19 +32,22 @@ public class PaymentController {
         Stripe.apiKey = stripeSecretKey;
     }
 
+    @Inject
+    ActualizarSuscripcionUseCase actualizarSuscripcionUseCase;
+
     @POST
     @Path("/checkout-subscription")
     public Response checkoutProfessionalSubscription(CheckoutProfessionalDTO request) {
         try {
             System.out.println("=== STRIPE CHECKOUT DEBUG ===");
             System.out.println("Customer Email: " + request.getCustomerEmail());
-            System.out.println("Success URL: " + request.getSuccessUrl());
+
 
             // Crear sesión de checkout de Stripe para suscripción profesional
             SessionCreateParams params = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                    .setSuccessUrl(request.getSuccessUrl() + "?session_id={CHECKOUT_SESSION_ID}")
-                    .setCancelUrl(request.getCancelUrl())
+                    .setSuccessUrl("http://localhost:3000/success" + "?session_id={CHECKOUT_SESSION_ID}")
+                    .setCancelUrl("http://localhost:3000/signup")
                     .setCustomerEmail(request.getCustomerEmail())
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
@@ -54,8 +59,11 @@ public class PaymentController {
                             SessionCreateParams.SubscriptionData.builder()
                                     .putMetadata("subscription_type", "professional")
                                     .putMetadata("user_email", request.getCustomerEmail())
+
                                     .build()
                     )
+                    .putMetadata("firebase_uid", request.getUid())
+                    .putMetadata("subscription_type", "professional")
                     .build();
 
             Session session = Session.create(params);
@@ -83,16 +91,14 @@ public class PaymentController {
     }
 
     @POST
-    @Path("/professional-subscription-success")
+    @Path("/payment-success")
     public Response professionalSubscriptionSuccess(ProfessionalSubscriptionSuccessDTO request) {
         try {
             System.out.println("=== SUBSCRIPTION SUCCESS DEBUG ===");
             System.out.println("Received sessionId: " + request.getSessionId());
 
-            // Recuperar los detalles de la sesión de Stripe
             Session session = Session.retrieve(request.getSessionId());
 
-            // Validar que la sesión esté completada
             if (!"complete".equals(session.getStatus())) {
                 System.out.println("Payment session not completed. Status: " + session.getStatus());
                 Map<String, String> error = new HashMap<>();
@@ -100,22 +106,24 @@ public class PaymentController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
             }
 
-            // Recuperar información de la suscripción
             String subscriptionId = session.getSubscription();
             String customerEmail = session.getCustomerEmail();
+            String uid = session.getMetadata().get("firebase_uid");
+            String subscriptionType = session.getMetadata().get("subscription_type");
 
             System.out.println("Subscription activated for: " + customerEmail);
             System.out.println("Subscription ID: " + subscriptionId);
+            System.out.println("User UID: " + uid);
 
-            // Aquí puedes agregar lógica adicional como:
-            // - Actualizar el estado del usuario en tu base de datos
-            // - Enviar email de confirmación
-            // - Activar funcionalidades profesionales
+            User updatedUser = actualizarSuscripcionUseCase.execute(uid, subscriptionType);
 
-            Map<String, String> response = new HashMap<>();
+            System.out.println("User role updated: " + updatedUser.getTipoRole());
+
+            Map<String, Object> response = new HashMap<>();
             response.put("message", "Professional subscription activated successfully");
             response.put("subscriptionId", subscriptionId);
             response.put("customerEmail", customerEmail);
+            response.put("user", updatedUser);
             response.put("status", "active");
 
             return Response.ok().entity(response).build();
@@ -132,4 +140,5 @@ public class PaymentController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
+
 }
