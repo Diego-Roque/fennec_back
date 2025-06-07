@@ -16,8 +16,8 @@ import java.util.Map;
 @ApplicationScoped
 public class PropertyEstimatorRepositoryImpl implements PropertyEstimatorRepository {
 
-    private static final String PREDICT_URL_DEPARTAMENTO = "http://localhost:8000/departamentos/predict";
-    private static final String PREDICT_URL_CASA = "http://localhost:8000/casas/predict";
+    private static final String PREDICT_URL_DEPARTAMENTO = "https://fennec-prediccion.onrender.com/departamentos/predict";
+    private static final String PREDICT_URL_CASA = "https://fennec-prediccion.onrender.com/casa/predict";
 
     @Override
     public PredictionResult estimarValorDepartamento(PropertyEstimator property) {

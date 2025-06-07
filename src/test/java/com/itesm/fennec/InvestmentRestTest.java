@@ -1,26 +1,32 @@
 package com.itesm.fennec;
 
-import com.itesm.fennec.application.service.InvestmentService;
 import com.itesm.fennec.application.service.firebase.FirebaseUserService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import com.itesm.fennec.domain.model.Investment;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
-
 import static org.hamcrest.Matchers.equalTo;
-
 
 @QuarkusTest
 public class InvestmentRestTest {
+
+    @InjectMock
+    FirebaseUserService firebaseUserService;
+
+    @BeforeEach
+    void setup() {
+        // Mock the Firebase token validation to return a test user ID
+        Mockito.when(firebaseUserService.getUidFromToken("testToken"))
+                .thenReturn("user-123");
+    }
+
     @Test
     void testCreateEndpoint() {
         Investment investment = new Investment();
@@ -37,6 +43,7 @@ public class InvestmentRestTest {
         investment.setRecamaras(3);
         investment.setEstacionamientos(1);
         investment.setId_usuario("user-123");
+
         given()
                 .contentType("application/json")
                 .header("Authorization", "Bearer testToken")
@@ -58,6 +65,4 @@ public class InvestmentRestTest {
                 .body("estacionamientos", equalTo(1))
                 .body("id_usuario", equalTo("user-123"));
     }
-
-
 }
