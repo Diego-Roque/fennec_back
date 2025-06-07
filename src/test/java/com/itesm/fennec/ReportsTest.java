@@ -51,4 +51,29 @@ public class ReportsTest {
             System.out.println("✅ Primer informe válido");
         }
     }
+
+    @Test
+    public void testListReportsWithInvalidUserId() {
+        // Caso fallido: Intentar listar informes con userId inválido
+        String userIdInvalido = null;
+
+        try {
+            List<InformeValuacion> informes = listarInformesUseCase.execute(userIdInvalido);
+
+            // Si se permite userId nulo, verificar que la lista esté vacía
+            if (informes != null && informes.isEmpty()) {
+                System.out.println("✅ Lista vacía para userId nulo - comportamiento esperado");
+            } else {
+                assert false : "❌ Se esperaba lista vacía o excepción para userId nulo";
+            }
+
+        } catch (IllegalArgumentException e) {
+            // Excepción esperada para userId nulo
+            assert true;
+            System.out.println("✅ Excepción esperada para userId nulo: " + e.getMessage());
+
+        } catch (Exception e) {
+            assert false : "❌ Excepción inesperada: " + e.getMessage();
+        }
+    }
 }
