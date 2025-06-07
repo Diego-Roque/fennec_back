@@ -21,19 +21,12 @@ public class ReportsTest {
 
     @Test
     public void testCreateReport() {
-        // Arrange - Crear un informe de prueba
-        InformeValuacion informe = new InformeValuacion();
-        // TODO: Configurar los campos del informe según tu modelo
-        // informe.setId_usuario("user-123");
-        // informe.setTitulo("Informe de Prueba");
-        // informe.setDescripcion("Descripción del informe");
-        // informe.setFecha_creacion(new Date());
 
-        // Act - Ejecutar el caso de uso
+        InformeValuacion informe = new InformeValuacion();
+
         try {
             insertarInformacionValuacionUseCase.execute(informe);
 
-            // Assert - Verificar que se ejecutó sin errores
             assert true; // Si llegamos aquí, no hubo excepción
             System.out.println("✅ Informe creado exitosamente");
 
@@ -44,13 +37,10 @@ public class ReportsTest {
 
     @Test
     public void testListReports() {
-        // Arrange
         String userId = "user-123";
 
-        // Act
         List<InformeValuacion> informes = listarInformesUseCase.execute(userId);
 
-        // Assert
         assert informes != null;
         System.out.println("✅ Lista de informes obtenida: " + informes.size() + " informes");
 

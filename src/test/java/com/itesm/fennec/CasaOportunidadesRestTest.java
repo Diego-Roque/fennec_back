@@ -1,4 +1,3 @@
-// ===== PRUEBA DE INTEGRACIÓN REST =====
 package com.itesm.fennec;
 
 import com.itesm.fennec.application.service.firebase.FirebaseUserService;
@@ -33,7 +32,7 @@ public class CasaOportunidadesRestTest {
         Mockito.when(firebaseUserService.getUidFromToken("testToken"))
                 .thenReturn("user-123");
 
-        // Mock con casas de oportunidad - usando campos correctos de la clase Casa
+        // Mock con casas de oportunidad
         Casa oportunidad1 = new Casa();
         oportunidad1.setDireccion("Av. Universidad 123");
         oportunidad1.setPrecio(new BigDecimal("2500000"));

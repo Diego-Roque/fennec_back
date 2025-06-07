@@ -1,4 +1,3 @@
-// ===== PRUEBA UNITARIA DE FUNCIÓN =====
 package com.itesm.fennec;
 
 import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioCasasUseCase;
@@ -18,11 +17,11 @@ public class CasaOportunidadesTest {
 
     @Test
     public void testObtenerOportunidades() {
-        // Act
+
         try {
             List<Casa> oportunidades = obtenerMenorAlPromedioCasasUseCase.execute();
 
-            // Assert
+
             assert oportunidades != null : "La lista de oportunidades no debería ser null";
             System.out.println("✅ Oportunidades obtenidas: " + oportunidades.size() + " casas");
 

@@ -22,7 +22,7 @@ public class InvestmentRestTest {
 
     @BeforeEach
     void setup() {
-        // Mock the Firebase token validation to return a test user ID
+        // Mock Firebase
         Mockito.when(firebaseUserService.getUidFromToken("testToken"))
                 .thenReturn("user-123");
     }

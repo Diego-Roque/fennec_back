@@ -1,4 +1,3 @@
-// ===== PRUEBA DE INTEGRACIÓN REST - UN SOLO CASO =====
 package com.itesm.fennec;
 
 import com.itesm.fennec.application.service.firebase.FirebaseUserService;
@@ -35,13 +34,13 @@ public class EmailRestTest {
 
     @Test
     void testSendEmailEndpoint() {
-        // Arrange
+
         SendEmailDTO emailDTO = new SendEmailDTO();
         emailDTO.setFirebaseUID("user-123");
         emailDTO.setSubject("Test Subject");
         emailDTO.setMessage("Test email body");
 
-        // Act & Assert
+
         given()
                 .contentType("application/json")
                 .header("Authorization", "Bearer testToken")

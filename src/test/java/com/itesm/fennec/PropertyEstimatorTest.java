@@ -17,7 +17,7 @@ public class PropertyEstimatorTest {
 
     @Test
     public void testEstimarValorDepartamento() {
-        // Arrange
+
         PropertyEstimator property = new PropertyEstimator(
                 "Benito Juárez",
                 80,
@@ -26,10 +26,8 @@ public class PropertyEstimatorTest {
                 1
         );
 
-        // Act
         PredictionResult result = propertyEstimatorRepository.estimarValorDepartamento(property);
 
-        // Assert
         assert result != null;
         assert result.getPrecioEstimado() > 0;
         assert result.getAlcaldia() != null;

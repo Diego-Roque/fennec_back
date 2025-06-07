@@ -1,4 +1,3 @@
-// ===== PRUEBA DE INTEGRACIÓN REST =====
 package com.itesm.fennec;
 
 import com.itesm.fennec.application.service.firebase.FirebaseUserService;
@@ -36,17 +35,13 @@ public class ReportsRestTest {
         Mockito.when(firebaseUserService.getUidFromToken("testToken"))
                 .thenReturn("user-123");
 
-        // Mock para insertar informe - retorna el informe insertado
         InformeValuacion mockInformeInsertado = new InformeValuacion();
-        // TODO: Configurar campos del informe insertado según tu modelo
 
         Mockito.when(insertarInformacionValuacionUseCase.execute(Mockito.any(InformeValuacion.class)))
                 .thenReturn(mockInformeInsertado);
 
-        // Mock para listar informes
         InformeValuacion mockInforme1 = new InformeValuacion();
         InformeValuacion mockInforme2 = new InformeValuacion();
-        // TODO: Configurar campos de los informes mock según tu modelo
 
         List<InformeValuacion> mockInformes = Arrays.asList(mockInforme1, mockInforme2);
 
@@ -57,9 +52,6 @@ public class ReportsRestTest {
     @Test
     void testCreateReportEndpoint() {
         InformeValuacion informe = new InformeValuacion();
-        // TODO: Configurar campos del informe según tu modelo
-        // informe.setTitulo("Informe de Prueba");
-        // informe.setDescripcion("Descripción del informe");
 
         given()
                 .contentType("application/json")
