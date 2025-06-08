@@ -1,4 +1,3 @@
-// ===== PRUEBA DE INTEGRACIÓN REST (si tienes endpoint) =====
 package com.itesm.fennec;
 
 import com.itesm.fennec.application.service.PropertyEstimatorService;
@@ -21,7 +20,7 @@ public class PropertyEstimatorRestTest {
 
     @BeforeEach
     void setup() {
-        // Setup mock para departamento
+
         PredictionResult.Caracteristicas deptCaracteristicas = new PredictionResult.Caracteristicas(
                 80.0,
                 3,
@@ -37,7 +36,7 @@ public class PropertyEstimatorRestTest {
                 "2025-06-06"
         );
 
-        // Setup mock para casa
+
         PredictionResult.Caracteristicas houseCaracteristicas = new PredictionResult.Caracteristicas(
                 120.0,
                 4,

@@ -21,19 +21,12 @@ public class ReportsTest {
 
     @Test
     public void testCreateReport() {
-        // Arrange - Crear un informe de prueba
-        InformeValuacion informe = new InformeValuacion();
-        // TODO: Configurar los campos del informe según tu modelo
-        // informe.setId_usuario("user-123");
-        // informe.setTitulo("Informe de Prueba");
-        // informe.setDescripcion("Descripción del informe");
-        // informe.setFecha_creacion(new Date());
 
-        // Act - Ejecutar el caso de uso
+        InformeValuacion informe = new InformeValuacion();
+
         try {
             insertarInformacionValuacionUseCase.execute(informe);
 
-            // Assert - Verificar que se ejecutó sin errores
             assert true; // Si llegamos aquí, no hubo excepción
             System.out.println("✅ Informe creado exitosamente");
 
@@ -44,13 +37,10 @@ public class ReportsTest {
 
     @Test
     public void testListReports() {
-        // Arrange
         String userId = "user-123";
 
-        // Act
         List<InformeValuacion> informes = listarInformesUseCase.execute(userId);
 
-        // Assert
         assert informes != null;
         System.out.println("✅ Lista de informes obtenida: " + informes.size() + " informes");
 
@@ -59,6 +49,31 @@ public class ReportsTest {
             InformeValuacion primerInforme = informes.get(0);
             assert primerInforme != null;
             System.out.println("✅ Primer informe válido");
+        }
+    }
+
+    @Test
+    public void testListReportsWithInvalidUserId() {
+        // Caso fallido: Intentar listar informes con userId inválido
+        String userIdInvalido = null;
+
+        try {
+            List<InformeValuacion> informes = listarInformesUseCase.execute(userIdInvalido);
+
+            // Si se permite userId nulo, verificar que la lista esté vacía
+            if (informes != null && informes.isEmpty()) {
+                System.out.println("✅ Lista vacía para userId nulo - comportamiento esperado");
+            } else {
+                assert false : "❌ Se esperaba lista vacía o excepción para userId nulo";
+            }
+
+        } catch (IllegalArgumentException e) {
+            // Excepción esperada para userId nulo
+            assert true;
+            System.out.println("✅ Excepción esperada para userId nulo: " + e.getMessage());
+
+        } catch (Exception e) {
+            assert false : "❌ Excepción inesperada: " + e.getMessage();
         }
     }
 }
