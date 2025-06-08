@@ -1,6 +1,8 @@
 package com.itesm.fennec.application.useCase;
 
 
+import com.itesm.fennec.application.service.CasaService;
+import com.itesm.fennec.application.service.DepartamentoService;
 import com.itesm.fennec.domain.repository.CasaRepository;
 import com.itesm.fennec.domain.repository.DepartamentoRepository;
 
@@ -10,14 +12,14 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class ObtenerPrecioM2UseCase {
     @Inject
-    CasaRepository casaRepository;
+    CasaService casaService;
 
     @Inject
-    DepartamentoRepository departamentoRepository;
+    DepartamentoService departamentoService;
 
     public double execute(boolean isDepartamento) {
-        return isDepartamento ?
-            departamentoRepository.obtenerPrecioM2() :
-            casaRepository.obtenerPrecioM2(); 
+        return isDepartamento
+                ? departamentoService.obtenerPrecioM2UseCase()
+                : casaService.obtenerPrecioM2();
     }
 }

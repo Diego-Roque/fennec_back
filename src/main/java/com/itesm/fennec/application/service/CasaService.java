@@ -14,36 +14,28 @@ import java.util.List;
 @ApplicationScoped
 public class CasaService {
     @Inject
-    private CasaRepository casaRepository;
+    CasaRepository casaRepository;
 
-    @Inject
-    ObtenerPromedioPrecioCasaUseCase useCase;
+
     public CasaPrecioPromedioResult obtenerPromedio(String alcaldia) {
-        return useCase.execute(alcaldia);
+        return casaRepository.obtenerPromedio(alcaldia);
     }
 
-    @Inject
-    ContarCasasPorAlcaldiaUseCase contarCasasPorAlcaldiaUseCase;
     public Long contarPorAlcaldia(String alcaldia) {
-        return contarCasasPorAlcaldiaUseCase.execute(alcaldia);
+        return casaRepository.contarPorAlcaldia(alcaldia);
     }
 
-    @Inject
-    ObtenerPromedioM2UseCase obtenerPromedioM2UseCase;
     public double obtenerPromedioM2(String alcaldia) {
-        return obtenerPromedioM2UseCase.execute(alcaldia, false);
+        return casaRepository.obtenerPromedioM2(alcaldia);
     }
 
-    @Inject
-    PromedioTodasCasasUseCase obtenerPromedioTodasCasasUseCase;
+
     public double PromedioTodasCasas() {
-        return obtenerPromedioTodasCasasUseCase.execute();
+        return casaRepository.obtenerPromedioTodasCasas();
     }
 
-    @Inject
-    ObtenerPrecioM2UseCase obtenerPrecioM2UseCase;
-    public Double obtenerPrecioM2UseCase() {
-        return obtenerPrecioM2UseCase.execute(false);
+    public Double obtenerPrecioM2() {
+        return casaRepository.obtenerPrecioM2();
     }
 
     @Inject

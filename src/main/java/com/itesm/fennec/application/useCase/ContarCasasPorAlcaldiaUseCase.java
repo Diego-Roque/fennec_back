@@ -1,5 +1,6 @@
 package com.itesm.fennec.application.useCase;
 
+import com.itesm.fennec.application.service.CasaService;
 import com.itesm.fennec.domain.repository.CasaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -8,9 +9,9 @@ import jakarta.inject.Inject;
 public class ContarCasasPorAlcaldiaUseCase {
 
     @Inject
-    CasaRepository casaRepository;
+    CasaService casaService;
 
     public Long execute(String alcaldia) {
-        return casaRepository.contarPorAlcaldia(alcaldia);
+        return casaService.contarPorAlcaldia(alcaldia);
     }
 }

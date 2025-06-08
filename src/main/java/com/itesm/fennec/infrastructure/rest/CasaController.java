@@ -1,9 +1,7 @@
 package com.itesm.fennec.infrastructure.rest;
 
-import com.itesm.fennec.application.service.CasaService;
-import com.itesm.fennec.application.useCase.ObtenerMenorAlPromedioCasasUseCase;
-import com.itesm.fennec.application.useCase.ObtenerNumCasasUseCase;
-import com.itesm.fennec.application.useCase.ObtenerTodasCasasUseCase;
+
+import com.itesm.fennec.application.useCase.*;
 import com.itesm.fennec.domain.model.AlcaldiaRequest;
 import com.itesm.fennec.domain.model.Casa;
 import com.itesm.fennec.domain.model.CasaPrecioPromedioResult;
@@ -24,9 +22,10 @@ import java.util.stream.Collectors;
 @Produces(MediaType.APPLICATION_JSON)
 public class CasaController {
 
-    @Inject
-    CasaService service;
 
+
+    @Inject
+    ObtenerPromedioPrecioCasaUseCase obtenerPromedioPrecioCasaUseCase;
     @POST
     @Path("/promedio")
     public Response obtenerPromedio(AlcaldiaRequest request) {
@@ -38,35 +37,45 @@ public class CasaController {
                     .build();
         }
 
-        CasaPrecioPromedioResult result = service.obtenerPromedio(alcaldia);
+        CasaPrecioPromedioResult result = obtenerPromedioPrecioCasaUseCase.execute(alcaldia);
         return Response.ok(result).build();
     }
 
+    @Inject
+    ContarCasasPorAlcaldiaUseCase contarCasasPorAlcaldiaUseCase;
     @POST
     @Path("/cantidad")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response contarPorAlcaldia(AlcaldiaRequest request) {
-        Long cantidad = service.contarPorAlcaldia(request.getAlcaldia());
+        Long cantidad = contarCasasPorAlcaldiaUseCase.execute(request.getAlcaldia());
         return Response.ok(cantidad).build();
     }
 
+    @Inject
+    ObtenerPromedioM2UseCase obtenerPromedioM2UseCase;
     @POST
     @Path("/m2_promedio")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerPromedioM2(AlcaldiaRequest request) {
-        double m2 = service.obtenerPromedioM2(request.getAlcaldia());
+        double m2 = obtenerPromedioM2UseCase.execute(
+                request.getAlcaldia(),
+                false
+        );
         return Response.ok(m2).build();
     }
 
+
+    @Inject
+    PromedioTodasCasasUseCase promedioTodasCasasUseCase;
     @POST
     @Path("/promedio_todas")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response promedioTodasCasas() {
         try {
-            Double promedio = service.PromedioTodasCasas();
+            Double promedio = promedioTodasCasasUseCase.execute();
             return Response.ok(promedio).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -74,6 +83,8 @@ public class CasaController {
                     .build();
         }
     }
+
+
     @Inject
     ObtenerNumCasasUseCase obtenerNumCasasUseCase;
     @GET
@@ -91,13 +102,15 @@ public class CasaController {
         }
     }
 
+    @Inject
+    ObtenerPrecioM2UseCase obtenerPrecioM2UseCase;
     @POST
     @Path("/m2_todas")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerPrecioM2() {
         try {
-            Double precio = service.obtenerPrecioM2UseCase();
+            Double precio = obtenerPrecioM2UseCase.execute(false);
             return Response.ok(precio).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

@@ -11,13 +11,14 @@ import jakarta.inject.Inject;
 public class EstimarValorUseCase {
 
     @Inject
-    PropertyEstimatorRepository repository;
+    PropertyEstimatorService propertyEstimatorService;
 
-    public PredictionResult execute(PropertyEstimator propertyEstimator) {
-        return repository.estimarValorDepartamento(propertyEstimator);
+    public PredictionResult execute(PropertyEstimator request) {
+        return propertyEstimatorService.estimar(request);
     }
 
-    public PredictionResult executeHouse(PropertyEstimator propertyEstimator) {
-        return repository.estimarValorCasa(propertyEstimator);
+    public PredictionResult executeHouse(PropertyEstimator request) {
+        return propertyEstimatorService.estimarHouse(request);
     }
+
 }

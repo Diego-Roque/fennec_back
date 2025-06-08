@@ -22,37 +22,32 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
         if (path.endsWith("/auth/signup")) {
             return;
         }
-        if (path.contains("/api/estimar")) {
-            return;
-        }
 
-        if (path.endsWith("/api/casa/promedio")) {
-            return;
-        }
-
-        if (path.endsWith("/api/casa/promedio_todas")) {
-            return;
-        }
-
-        if (path.endsWith("/api/departamento/oportunidades")) {
-            return;
-        }
-        if (path.endsWith("/api/casa/m2_promedio")) {
-            return;
-        }
-
-        if (path.endsWith("/api/create-new-report")) {
-            return;
-        }
-        if (path.endsWith("/propiedades/filtrar")) {
-            return;
-        }
         if (path.endsWith("/payments/checkout-subscription")) {
             return;
         }
         if (path.endsWith("/payments/payment-success")) {
             return;
         }
+        if (path.endsWith("/api/casa/promedio_todas")) {
+            return;
+        }
+        if (path.endsWith("/api/casa/m2_todas")) {
+            return;
+        }if (path.endsWith("/api/casa/promedio")) {
+            return;
+        }
+if (path.endsWith("/api/casa/cantidad")) {
+            return;
+        }if (path.endsWith("/api/casa/m2_promedio")) {
+            return;
+        }
+
+if (path.endsWith("/api/casa/list-casas")) {
+            return;
+        }
+
+
 
         String authHeader = requestContext.getHeaderString("Authorization");
 

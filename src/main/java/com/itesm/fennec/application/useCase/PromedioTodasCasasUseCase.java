@@ -1,5 +1,6 @@
 package com.itesm.fennec.application.useCase;
 
+import com.itesm.fennec.application.service.CasaService;
 import com.itesm.fennec.domain.repository.CasaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -7,9 +8,9 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class PromedioTodasCasasUseCase {
     @Inject
-    CasaRepository casaRepository;
+    CasaService casaService;
 
     public Double execute() {
-        return casaRepository.obtenerPromedioTodasCasas();
+        return casaService.PromedioTodasCasas();
     }
 }

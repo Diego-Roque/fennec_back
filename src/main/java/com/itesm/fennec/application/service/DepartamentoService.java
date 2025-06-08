@@ -17,34 +17,29 @@ public class DepartamentoService {
     @Inject
     DepartamentoRepository departamentoRepository;
 
-    @Inject
-    ObtenerPromedioPrecioDepartamentoUseCase useCase;
+
     public DepartamentoPrecioPromedioResult obtenerPromedio(String alcaldia) {
-        return useCase.execute(alcaldia);
+        return departamentoRepository.obtenerPromedio(alcaldia);
     }
 
-    @Inject
-    ContarDepartamentosPorAlcaldiaUseCase contarDepartamentosPorAlcaldiaUseCase;
+
     public Long contarPorAlcaldia(String alcaldia) {
-        return contarDepartamentosPorAlcaldiaUseCase.execute(alcaldia);
+        return departamentoRepository.contarPorAlcaldia(alcaldia);
     }
 
-    @Inject
-    ObtenerPromedioM2UseCase obtenerPromedioM2UseCase;
+
     public double obtenerPromedioM2(String alcaldia) {
-        return obtenerPromedioM2UseCase.execute(alcaldia, true);
+        return departamentoRepository.obtenerPromedioM2(alcaldia);
     }
 
-    @Inject
-    PromedioTodosDepartamentosUseCase obtenerPromedioTodosDepartamentosUseCase;
+
     public double PromedioTodosDepartamentos() {
-        return obtenerPromedioTodosDepartamentosUseCase.execute();
+        return departamentoRepository.obtenerPromedioTodosDepartamentos();
     }
 
-    @Inject
-    ObtenerPrecioM2UseCase obtenerPrecioM2UseCase;
+
     public Double obtenerPrecioM2UseCase() {
-        return obtenerPrecioM2UseCase.execute(true);
+        return departamentoRepository.obtenerPrecioM2();
     }
 
     public List<Departamento> obtenerTodosDepartamentos() {
