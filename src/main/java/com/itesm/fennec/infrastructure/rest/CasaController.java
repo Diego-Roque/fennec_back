@@ -9,7 +9,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Path("api/casa")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Casas", description = "Operaciones relacionadas con propiedades tipo casa")
 public class CasaController {
 
 
@@ -28,6 +31,10 @@ public class CasaController {
     ObtenerPromedioPrecioCasaUseCase obtenerPromedioPrecioCasaUseCase;
     @POST
     @Path("/promedio")
+    @Operation(summary = "Obtener promedio de precio por alcaldía",
+            description = "Devuelve el promedio de precios de casas para una alcaldía específica")
+    @APIResponse(responseCode = "200", description = "Promedio devuelto correctamente")
+    @APIResponse(responseCode = "400", description = "Campo 'alcaldia' es requerido")
     public Response obtenerPromedio(AlcaldiaRequest request) {
         String alcaldia = request.getAlcaldia();
 
@@ -47,6 +54,9 @@ public class CasaController {
     @Path("/cantidad")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Contar casas por alcaldía",
+            description = "Devuelve el número total de casas en una alcaldía específica")
+    @APIResponse(responseCode = "200", description = "Cantidad devuelta correctamente")
     public Response contarPorAlcaldia(AlcaldiaRequest request) {
         Long cantidad = contarCasasPorAlcaldiaUseCase.execute(request.getAlcaldia());
         return Response.ok(cantidad).build();
@@ -58,6 +68,9 @@ public class CasaController {
     @Path("/m2_promedio")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Obtener promedio de precio por m²",
+            description = "Devuelve el promedio de precio por metro cuadrado en una alcaldía, para casas o departamentos")
+    @APIResponse(responseCode = "200", description = "Promedio de m² calculado correctamente")
     public Response obtenerPromedioM2(AlcaldiaRequest request) {
         double m2 = obtenerPromedioM2UseCase.execute(
                 request.getAlcaldia(),
@@ -71,6 +84,8 @@ public class CasaController {
     PromedioTodasCasasUseCase promedioTodasCasasUseCase;
     @POST
     @Path("/promedio_todas")
+    @APIResponse(responseCode = "200", description = "Promedio total calculado")
+    @APIResponse(responseCode = "500", description = "Error al obtener el promedio")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response promedioTodasCasas() {
@@ -90,6 +105,9 @@ public class CasaController {
     @GET
     @Path("/num-casas")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Número total de casas",
+            description = "Devuelve la cantidad total de casas en el sistema")
+    @APIResponse(responseCode = "200", description = "Cantidad obtenida correctamente")
     public Response obtenerNumCasas() {
         try {
             long numCasas = obtenerNumCasasUseCase.execute();
@@ -106,6 +124,10 @@ public class CasaController {
     ObtenerPrecioM2UseCase obtenerPrecioM2UseCase;
     @POST
     @Path("/m2_todas")
+    @Operation(summary = "Obtener promedio general de m²",
+            description = "Calcula el promedio de m² general para casas o departamentos")
+    @APIResponse(responseCode = "200", description = "Promedio general de m² obtenido")
+    @APIResponse(responseCode = "500", description = "Error interno")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerPrecioM2() {
@@ -119,11 +141,14 @@ public class CasaController {
         }
     }
 
-    @Inject 
+    @Inject
     ObtenerTodasCasasUseCase obtenerTodasCasasUseCase;
 
     @GET
     @Path("/promedio-por-alcaldia")
+    @Operation(summary = "Promedio de precios por alcaldía",
+            description = "Calcula el promedio de precios agrupado por alcaldía")
+    @APIResponse(responseCode = "200", description = "Promedios agrupados por alcaldía obtenidos")
     public Response obtenerPromedioPorAlcaldia() {
         try {
             List<Casa> casas = obtenerTodasCasasUseCase.execute();
@@ -145,7 +170,9 @@ public class CasaController {
 
     @GET
     @Path("list-casas")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)@Operation(summary = "Lista de todas las casas",
+            description = "Devuelve la lista completa de casas registradas")
+    @APIResponse(responseCode = "200", description = "Lista obtenida correctamente")
     public Response obtenerTodasLasCasas() {
         try {
             List<Casa> casas = obtenerTodasCasasUseCase.execute();
@@ -163,6 +190,10 @@ public class CasaController {
 
     @GET
     @Path("/oportunidades")
+    @Operation(summary = "Casas por debajo del promedio",
+            description = "Devuelve las casas cuyo precio está por debajo del promedio general")
+    @APIResponse(responseCode = "200", description = "Lista de casas obtenida")
+    @APIResponse(responseCode = "404", description = "No se encontraron casas por debajo del promedio")
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerMenorAlPromedio() {
         try {

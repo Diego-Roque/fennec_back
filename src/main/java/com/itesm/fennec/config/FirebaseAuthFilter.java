@@ -46,6 +46,9 @@ if (path.endsWith("/api/casa/cantidad")) {
 if (path.endsWith("/api/casa/list-casas")) {
             return;
         }
+        if (path.endsWith("/propiedades/filtrar")) {
+            return;
+        }
 
 
 

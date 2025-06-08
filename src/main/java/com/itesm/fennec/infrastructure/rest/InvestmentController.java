@@ -10,6 +10,13 @@ import com.itesm.fennec.domain.repository.InvestmentRepository;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,13 +24,22 @@ import java.util.Optional;
 @Path("api/investment")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Investment", description = "Operaciones sobre inversiones de usuario")
 public class InvestmentController {
     @Inject
     InsertarInversionUseCase insertarInversionUseCase;
 
 
     @POST
-    public Response insertarInversion(@HeaderParam("Authorization") String authHeader,Investment investment) {
+    @Operation(summary = "Insertar una nueva inversión para el usuario autenticado")
+    @APIResponse(responseCode = "200", description = "Inversión insertada exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Investment.class)))
+    @APIResponse(responseCode = "401", description = "Token de autorización faltante o inválido")
+    public Response insertarInversion(@Parameter(description = "Token de Firebase", required = true)
+                                          @HeaderParam("Authorization") String authHeader,
+                                      @RequestBody(description = "Datos de la inversión", required = true,
+                                              content = @Content(schema = @Schema(implementation = Investment.class)))
+                                          Investment investment) {
         if (authHeader == null || authHeader.isEmpty()) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized").build();
         }
@@ -46,7 +62,13 @@ public class InvestmentController {
 
     @GET
     @Path("list-investments")
-    public Response listInvestments(@HeaderParam("Authorization") String authHeader) {
+    @Operation(summary = "Listar todas las inversiones del usuario autenticado")
+    @APIResponse(responseCode = "200", description = "Listado de inversiones",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Investment.class)))
+    @APIResponse(responseCode = "401", description = "Token de autorización faltante o inválido")
+    @APIResponse(responseCode = "400", description = "No se encontraron inversiones o error de token")
+    public Response listInvestments(@Parameter(description = "Token de Firebase", required = true)
+                                        @HeaderParam("Authorization") String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized").build();
         }

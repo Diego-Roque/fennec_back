@@ -14,11 +14,19 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import jakarta.annotation.PostConstruct;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
 import java.util.Map;
 import java.util.HashMap;
 
 @Path("/payments")
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Pagos", description = "Operaciones relacionadas con suscripciones y pagos con Stripe")
 public class PaymentController {
 
     @ConfigProperty(name = "stripe.secret.key")
@@ -37,7 +45,28 @@ public class PaymentController {
 
     @POST
     @Path("/checkout-subscription")
-    public Response checkoutProfessionalSubscription(CheckoutProfessionalDTO request) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Crear sesión de checkout de Stripe para suscripción profesional")
+    @APIResponse(
+            responseCode = "200",
+            description = "Sesión de pago creada correctamente",
+            content = @Content(mediaType = "application/json")
+    )
+    @APIResponse(
+            responseCode = "400",
+            description = "Error al crear la sesión de pago"
+    )
+    @APIResponse(
+            responseCode = "500",
+            description = "Error interno del servidor"
+    )
+    public Response checkoutProfessionalSubscription( @RequestBody(
+                                                                  description = "Información del usuario para crear sesión de pago",
+                                                                  required = true,
+                                                                  content = @Content(schema = @Schema(implementation = CheckoutProfessionalDTO.class))
+                                                          )
+                                                          CheckoutProfessionalDTO request
+    )  {
         try {
             System.out.println("=== STRIPE CHECKOUT DEBUG ===");
             System.out.println("Customer Email: " + request.getCustomerEmail());
@@ -92,7 +121,28 @@ public class PaymentController {
 
     @POST
     @Path("/payment-success")
-    public Response professionalSubscriptionSuccess(ProfessionalSubscriptionSuccessDTO request) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Confirmar éxito de suscripción y actualizar el rol del usuario")
+    @APIResponse(
+            responseCode = "200",
+            description = "Suscripción activada y usuario actualizado",
+            content = @Content(mediaType = "application/json")
+    )
+    @APIResponse(
+            responseCode = "400",
+            description = "La sesión de pago no está completa o es inválida"
+    )
+    @APIResponse(
+            responseCode = "500",
+            description = "Error interno del servidor"
+    )
+    public Response professionalSubscriptionSuccess(@RequestBody(
+                                                                description = "Información de la sesión de pago",
+                                                                required = true,
+                                                                content = @Content(schema = @Schema(implementation = ProfessionalSubscriptionSuccessDTO.class))
+                                                        )
+                                                        ProfessionalSubscriptionSuccessDTO request
+    ) {
         try {
             System.out.println("=== SUBSCRIPTION SUCCESS DEBUG ===");
             System.out.println("Received sessionId: " + request.getSessionId());

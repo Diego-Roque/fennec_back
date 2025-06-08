@@ -10,6 +10,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,16 +28,30 @@ import java.util.stream.Collectors;
 @Path("api/departamento")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Departamento", description = "Operaciones relacionadas con departamentos")
 public class DepartamentoController {
 
-    @Inject
-    DepartamentoService service;
 
     @Inject
     ObtenerPromedioPrecioDepartamentoUseCase obtenerPromedioPrecioDepartamentoUseCase;
     @POST
     @Path("/promedio")
-    public Response obtenerPromedio(AlcaldiaRequest request) {
+    @Operation(summary = "Obtener precio promedio de departamentos por alcaldía")
+    @APIResponse(
+            responseCode = "200",
+            description = "Promedio obtenido exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoPrecioPromedioResult.class))
+    )
+    @APIResponse(
+            responseCode = "400",
+            description = "Falta el campo de alcaldía"
+    )
+    @APIResponse(
+            responseCode = "500",
+            description = "Error interno del servidor"
+    )
+    public Response obtenerPromedio( @RequestBody(description = "Alcaldía de consulta", required = true,
+            content = @Content(schema = @Schema(implementation = AlcaldiaRequest.class))) AlcaldiaRequest request) {
         String alcaldia = request.getAlcaldia();
 
         if (alcaldia == null || alcaldia.isBlank()) {
@@ -47,9 +68,13 @@ public class DepartamentoController {
     ContarDepartamentosPorAlcaldiaUseCase contarDepartamentosPorAlcaldiaUseCase;
     @POST
     @Path("/cantidad")
+    @Operation(summary = "Contar departamentos en una alcaldía")
+    @APIResponse(responseCode = "200", description = "Cantidad total de departamentos",
+            content = @Content(schema = @Schema(implementation = Long.class)))
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response contarPorAlcaldia(AlcaldiaRequest request) {
+    public Response contarPorAlcaldia( @RequestBody(description = "Alcaldía", required = true,
+            content = @Content(schema = @Schema(implementation = AlcaldiaRequest.class)))AlcaldiaRequest request) {
         Long cantidad = contarDepartamentosPorAlcaldiaUseCase.execute(request.getAlcaldia());
         return Response.ok(cantidad).build();
     }
@@ -58,9 +83,12 @@ public class DepartamentoController {
     ObtenerPromedioM2UseCase obtenerPromedioM2UseCase;
     @POST
     @Path("/m2_promedio")
+    @Operation(summary = "Obtener precio promedio por m² en una alcaldía (solo departamentos)")
+    @APIResponse(responseCode = "200", description = "Promedio m²", content = @Content(schema = @Schema( format = "double")))
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerPromedioM2(AlcaldiaRequest request) {
+    public Response obtenerPromedioM2(@RequestBody(description = "Alcaldía", required = true,
+            content = @Content(schema = @Schema(implementation = AlcaldiaRequest.class))) AlcaldiaRequest request) {
         double m2 = obtenerPromedioM2UseCase.execute(
                 request.getAlcaldia(),
                 true
@@ -72,6 +100,9 @@ public class DepartamentoController {
     PromedioTodosDepartamentosUseCase promedioTodosDepartamentosUseCase;
     @POST
     @Path("/promedio_todos")
+    @Operation(summary = "Obtener precio promedio de todos los departamentos")
+    @APIResponse(responseCode = "200", description = "Promedio global", content = @Content(schema = @Schema(type = SchemaType.NUMBER
+            , format = "double")))
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response promedioTodosDepartamentos() {
@@ -90,6 +121,9 @@ public class DepartamentoController {
 
     @GET
     @Path("/promedio-por-alcaldia")
+    @Operation(summary = "Obtener promedios por alcaldía")
+    @APIResponse(responseCode = "200", description = "Mapa de alcaldías con promedio",
+            content = @Content(schema = @Schema(implementation = Map.class)))
     public Response obtenerPromedioPorAlcaldia() {
         try {
             List<Departamento> departamentos = obtenerTodosDepartamentosUseCase.execute();
@@ -113,6 +147,10 @@ public class DepartamentoController {
     ObtenerPrecioM2UseCase obtenerPrecioM2UseCase;
     @POST
     @Path("/m2_todos")
+    @Operation(summary = "Obtener promedio general de precio por m² de departamentos")
+    @APIResponse(responseCode = "200", description = "Promedio m²",
+            content = @Content(schema = @Schema(type = SchemaType.NUMBER
+                    , format = "double")))
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerPrecioM2() {
@@ -129,6 +167,9 @@ public class DepartamentoController {
     ObtenerTodosDepartamentosUseCase obtenerDepartamentos;
     @GET
     @Path("list-departamentos")
+    @Operation(summary = "Listar todos los departamentos")
+    @APIResponse(responseCode = "200", description = "Lista completa de departamentos",
+            content = @Content(schema = @Schema(implementation = Departamento.class)))
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerTodosLosDepartamentos() {
         try {
@@ -145,6 +186,10 @@ public class DepartamentoController {
     ObtenerNumDepartamentosUseCase obtenerNumDepartamentosUseCase;
     @GET
     @Path("/num-departamentos")
+    @Operation(summary = "Obtener número total de departamentos")
+    @APIResponse(responseCode = "200", description = "Cantidad total",
+            content = @Content(schema = @Schema(type = SchemaType.INTEGER
+            )))
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerNumCasas() {
         try {
@@ -165,6 +210,10 @@ public class DepartamentoController {
 
     @GET
     @Path("/oportunidades")
+    @Operation(summary = "Listar departamentos con precio por debajo del promedio")
+    @APIResponse(responseCode = "200", description = "Lista de oportunidades",
+            content = @Content(schema = @Schema(implementation = Departamento.class)))
+    @APIResponse(responseCode = "404", description = "No se encontraron oportunidades")
     @Produces(MediaType.APPLICATION_JSON)
     public Response obtenerMenorAlPromedio() {
         try {
