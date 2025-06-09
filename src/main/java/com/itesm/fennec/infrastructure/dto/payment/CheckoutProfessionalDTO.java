@@ -12,4 +12,5 @@ import lombok.Setter;
 public class CheckoutProfessionalDTO {
     private String customerEmail;
     private String uid;
+    private String type;
 }

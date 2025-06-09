@@ -23,6 +23,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Objects;
 
 @Path("/payments")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,9 +32,6 @@ public class PaymentController {
 
     @ConfigProperty(name = "stripe.secret.key")
     String stripeSecretKey;
-
-    @ConfigProperty(name = "stripe.professional.price.id")
-    String professionalPriceId;
 
     @PostConstruct
     void init() {
@@ -67,6 +65,21 @@ public class PaymentController {
                                                           )
                                                           CheckoutProfessionalDTO request
     )  {
+        String finalprice= "";
+        String price1="price_1RXtKjBh8F8W0UaWpX7hgiBq";
+        String price2="price_1RXtLjBh8F8W0UaWkPdkDTkB";
+        String price3="price_1RXtM1Bh8F8W0UaWumrmFJX6";
+
+        if(Objects.equals(request.getType(), "starter")){
+            finalprice=price1;
+        }
+        if(Objects.equals(request.getType(), "professional")){
+            finalprice=price2;
+        }
+        if(Objects.equals(request.getType(), "empresarial")){
+            finalprice=price3;
+        }
+        String professionalPriceId;
         try {
             System.out.println("=== STRIPE CHECKOUT DEBUG ===");
             System.out.println("Customer Email: " + request.getCustomerEmail());
@@ -80,7 +93,7 @@ public class PaymentController {
                     .setCustomerEmail(request.getCustomerEmail())
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
-                                    .setPrice(professionalPriceId)
+                                    .setPrice(finalprice)
                                     .setQuantity(1L)
                                     .build()
                     )
@@ -92,7 +105,7 @@ public class PaymentController {
                                     .build()
                     )
                     .putMetadata("firebase_uid", request.getUid())
-                    .putMetadata("subscription_type", "professional")
+                    .putMetadata("subscription_type", request.getType())
                     .build();
 
             Session session = Session.create(params);
